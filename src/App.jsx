@@ -193,14 +193,14 @@ const App = () => {
       </nav>
 
       {/* Minimalist Vivid Hero Section */}
-      <section className="hero-gradient relative min-h-[90vh] flex items-center justify-center overflow-hidden">
+      <section className="hero-gradient relative min-h-[90vh] flex items-center justify-center overflow-hidden pt-32 pb-16 md:pt-40 md:pb-24">
         <div className="hero-overlay absolute inset-0"></div>
-        <div className="relative z-10 px-6 max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-12 mt-20 md:mt-0">
+        <div className="relative z-10 px-6 w-full max-w-7xl mx-auto flex flex-col-reverse md:flex-row items-center justify-between gap-16 md:gap-12 mt-8 md:mt-0">
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8 }}
-            className="flex-1 text-center md:text-left"
+            className="flex-1 text-center md:text-left w-full"
           >
             <p className="text-white/80 font-medium tracking-widest uppercase text-sm mb-4">
               Full Stack Developer | Architect
@@ -272,33 +272,33 @@ const App = () => {
             initial={{ opacity: 0, scale: 0.8, rotate: -5 }}
             animate={{ opacity: 1, scale: 1, rotate: 0 }}
             transition={{ duration: 1, type: "spring" }}
-            className="flex-1 relative w-full max-w-[320px] md:max-w-[420px] mx-auto md:mr-0 z-10 hidden md:block"
+            className="flex-1 relative w-full max-w-[280px] sm:max-w-[320px] md:max-w-[420px] mx-auto md:mr-0 z-10 block"
           >
             <div className="absolute inset-x-0 -bottom-10 h-20 bg-white/20 blur-[100px] rounded-full"></div>
-            <div className="relative bg-white/10 backdrop-blur-xl p-3 rounded-[2.5rem] border border-white/20 shadow-2xl group">
+            <div className="relative bg-white/10 backdrop-blur-xl p-3 rounded-[2rem] md:rounded-[2.5rem] border border-white/20 shadow-2xl group">
               <img
                 src={profileImg}
                 alt="Vimlesh Kumar"
-                className="w-full h-[480px] object-cover rounded-[2rem] transition-transform duration-700 group-hover:scale-[1.03]"
+                className="w-full h-[320px] md:h-[480px] object-cover rounded-[1.5rem] md:rounded-[2rem] transition-transform duration-700 group-hover:scale-[1.03]"
               />
-              <div className="absolute inset-0 rounded-[2.5rem] border border-white/20 bg-gradient-to-t from-indigo-900/60 via-transparent to-transparent opacity-80 pointer-events-none"></div>
+              <div className="absolute inset-0 rounded-[2rem] md:rounded-[2.5rem] border border-white/20 bg-gradient-to-t from-indigo-900/60 via-transparent to-transparent opacity-80 pointer-events-none"></div>
             </div>
 
             {/* Fancy Floating Elements */}
             <motion.div
               animate={{ y: [0, -15, 0] }}
               transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute -top-6 -right-8 bg-white/10 backdrop-blur-xl border border-white/20 p-4 rounded-2xl shadow-xl z-20"
+              className="absolute -top-6 -right-4 sm:-right-8 bg-white/10 backdrop-blur-xl border border-white/20 p-3 md:p-4 rounded-2xl shadow-xl z-20"
             >
-              <div className="flex items-center gap-4">
-                <div className="p-3 bg-gradient-to-br from-indigo-400 to-purple-500 rounded-xl text-white shadow-inner">
-                  <CalendarDays size={24} />
+              <div className="flex items-center gap-3 md:gap-4">
+                <div className="p-2 md:p-3 bg-gradient-to-br from-indigo-400 to-purple-500 rounded-xl text-white shadow-inner">
+                  <CalendarDays className="w-5 h-5 md:w-6 md:h-6" />
                 </div>
                 <div>
-                  <p className="text-white text-sm font-bold">
+                  <p className="text-white text-xs md:text-sm font-bold">
                     {yearsOfExperience}+ Years
                   </p>
-                  <p className="text-indigo-200 text-xs font-semibold uppercase tracking-widest">
+                  <p className="text-indigo-200 text-[10px] md:text-xs font-semibold uppercase tracking-widest">
                     Experience
                   </p>
                 </div>
