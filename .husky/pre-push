@@ -1,0 +1,2 @@
+echo "Checking test coverage before push..."
+npm run coverage

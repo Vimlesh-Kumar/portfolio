@@ -18,6 +18,12 @@ export default defineConfig({
       all: true,
       include: ['src/**/*.{js,jsx,ts,tsx}'],
       exclude: ['src/assets/**', 'src/setupTests.ts'],
+      thresholds: {
+        lines: 100,
+        functions: 100,
+        branches: 100,
+        statements: 100,
+      },
     },
   },
 })

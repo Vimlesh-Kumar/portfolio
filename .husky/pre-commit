@@ -1,0 +1,2 @@
+echo "Checking test coverage before commit..."
+npm run coverage
