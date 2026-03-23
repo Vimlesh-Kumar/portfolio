@@ -1,40 +1,42 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
-import { describe, it, expect, vi } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import Projects from "../Projects";
 
-vi.mock("framer-motion", () => {
-  return {
-    motion: {
-      div: ({ children, ...props }: any) => {
-        const { initial, whileInView, viewport, variants, ...validProps } =
-          props;
-        return <div {...validProps}>{children}</div>;
-      },
+vi.mock("framer-motion", () => ({
+  motion: {
+    div: ({ children, ...props }: any) => {
+      const { initial, whileInView, viewport, transition, ...validProps } =
+        props;
+      return <div {...validProps}>{children}</div>;
     },
-  };
-});
+    a: ({ children, ...props }: any) => {
+      const { initial, whileInView, viewport, transition, ...validProps } =
+        props;
+      return <a {...validProps}>{children}</a>;
+    },
+  },
+}));
 
-describe("Projects Component", () => {
-  it("renders without crashing", () => {
+describe("Projects", () => {
+  it("renders the projects section heading", () => {
     render(<Projects />);
-    expect(screen.getByText("Featured GitHub Projects")).toBeInTheDocument();
+    expect(
+      screen.getByText("Selected builds with product and engineering depth."),
+    ).toBeInTheDocument();
   });
 
-  it("renders a list of projects", () => {
+  it("renders featured project titles", () => {
     render(<Projects />);
-
-    // Check for some project titles
-    expect(screen.getByText("Weather App")).toBeInTheDocument();
+    expect(screen.getByText("Realtime Weather Studio")).toBeInTheDocument();
+    expect(screen.getByText("Tatkal Reminder Platform")).toBeInTheDocument();
     expect(screen.getByText("Zync Audio Sync")).toBeInTheDocument();
-    expect(screen.getByText("Student Result Portal")).toBeInTheDocument();
   });
 
-  it("contains tags for tech specs", () => {
+  it("renders project stack tags", () => {
     render(<Projects />);
-
-    // Test that the technologies text exist in the document
-    expect(screen.getAllByText("TypeScript").length).toBeGreaterThan(0); // React and Typescript tags shown for Weather
-    expect(screen.getByText("Vuex")).toBeInTheDocument();
+    expect(screen.getByText("React")).toBeInTheDocument();
+    expect(screen.getByText("Node.js")).toBeInTheDocument();
+    expect(screen.getByText("Realtime")).toBeInTheDocument();
   });
 });

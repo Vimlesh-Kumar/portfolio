@@ -1,33 +1,27 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
-import { describe, it, expect, vi } from "vitest";
+import { describe, expect, it } from "vitest";
 import Footer from "../Footer";
 
-describe("Footer Component", () => {
-  it("renders without crashing", () => {
+describe("Footer", () => {
+  it("renders the footer copy", () => {
     render(<Footer />);
-    // Check if copyright text exists (using regex to match the year dynamically)
-    const textElement = screen.getByText(
-      /Vimlesh Kumar\. All rights reserved\./i,
-    );
-    expect(textElement).toBeInTheDocument();
+    expect(
+      screen.getByText(/Vimlesh Kumar\. Built with React and Tailwind\./i),
+    ).toBeInTheDocument();
   });
 
   it("renders social links", () => {
     render(<Footer />);
-    const links = screen.getAllByRole("link");
-    expect(links.length).toBe(3); // GitHub, LinkedIn, Email
-
-    // Check href attributes
-    expect(links[0]).toHaveAttribute(
+    expect(screen.getByRole("link", { name: "GitHub" })).toHaveAttribute(
       "href",
       "https://github.com/Vimlesh-Kumar",
     );
-    expect(links[1]).toHaveAttribute(
+    expect(screen.getByRole("link", { name: "LinkedIn" })).toHaveAttribute(
       "href",
       "https://linkedin.com/in/vimlesh11",
     );
-    expect(links[2]).toHaveAttribute(
+    expect(screen.getByRole("link", { name: "Email" })).toHaveAttribute(
       "href",
       "mailto:vimlesh11072000@gmail.com",
     );

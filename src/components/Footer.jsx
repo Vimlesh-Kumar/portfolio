@@ -3,33 +3,34 @@ import { Github, Linkedin, Mail } from "lucide-react";
 
 const Footer = () => {
   return (
-    <footer className="bg-white border-t border-gray-200 mt-20">
-      <div className="max-w-7xl mx-auto px-6 py-12 flex flex-col md:flex-row justify-between items-center gap-4">
-        <p className="text-gray-500 font-medium text-sm">
-          © {new Date().getFullYear()} Vimlesh Kumar. All rights reserved.
-        </p>
-        <div className="flex gap-6">
+    <footer className="px-6 pb-8 pt-2 md:px-8">
+      <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 rounded-2xl border border-white/10 bg-slate-950/40 px-5 py-5 text-sm text-slate-400 md:flex-row">
+        <p>© {new Date().getFullYear()} Vimlesh Kumar. Built with React and Tailwind.</p>
+        <div className="flex items-center gap-3">
           <a
             href="https://github.com/Vimlesh-Kumar"
-            className="text-gray-400 hover:text-indigo-600 transition-colors"
             target="_blank"
             rel="noreferrer"
+            aria-label="GitHub"
+            className="rounded-full border border-white/10 bg-white/5 p-2.5 text-slate-300 transition hover:border-cyan-300/40 hover:text-white"
           >
-            <Github className="w-5 h-5" />
+            <Github className="h-4 w-4" />
           </a>
           <a
             href="https://linkedin.com/in/vimlesh11"
-            className="text-gray-400 hover:text-indigo-600 transition-colors"
             target="_blank"
             rel="noreferrer"
+            aria-label="LinkedIn"
+            className="rounded-full border border-white/10 bg-white/5 p-2.5 text-slate-300 transition hover:border-cyan-300/40 hover:text-white"
           >
-            <Linkedin className="w-5 h-5" />
+            <Linkedin className="h-4 w-4" />
           </a>
           <a
             href="mailto:vimlesh11072000@gmail.com"
-            className="text-gray-400 hover:text-indigo-600 transition-colors"
+            aria-label="Email"
+            className="rounded-full border border-white/10 bg-white/5 p-2.5 text-slate-300 transition hover:border-cyan-300/40 hover:text-white"
           >
-            <Mail className="w-5 h-5" />
+            <Mail className="h-4 w-4" />
           </a>
         </div>
       </div>

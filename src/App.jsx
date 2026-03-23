@@ -3,36 +3,38 @@ import { motion, useScroll, useSpring } from "framer-motion";
 
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
-import About from "./components/About";
-import Experience from "./components/Experience";
 import Projects from "./components/Projects";
 import Skills from "./components/Skills";
+import Contact from "./components/Contact";
 import Footer from "./components/Footer";
 
 const App = () => {
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, {
-    stiffness: 100,
-    damping: 30,
+    stiffness: 110,
+    damping: 26,
     restDelta: 0.001,
   });
 
   return (
-    <div className="bg-gray-50 min-h-screen text-gray-900 font-sans selection:bg-indigo-100 selection:text-indigo-900">
-      {/* Scroll Progress Indicator */}
+    <div className="relative min-h-screen overflow-x-hidden bg-[var(--color-bg)] text-[var(--color-text)] selection:bg-cyan-300/30 selection:text-white">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(34,211,238,0.14),_transparent_28%),radial-gradient(circle_at_80%_20%,_rgba(139,92,246,0.18),_transparent_26%),radial-gradient(circle_at_bottom_right,_rgba(16,185,129,0.14),_transparent_22%)]" />
+
       <motion.div
-        className="fixed top-0 left-0 right-0 h-1 bg-white z-50 origin-[0%]"
+        className="fixed inset-x-0 top-0 z-50 h-1 origin-left bg-gradient-to-r from-cyan-400 via-sky-400 to-emerald-400"
         style={{ scaleX }}
       />
 
       <Navbar />
-      <Hero />
 
-      <main className="max-w-7xl mx-auto px-6 py-24 space-y-32">
-        <About />
-        <Experience />
-        <Projects />
-        <Skills />
+      <main>
+        <Hero />
+
+        <div className="relative mx-auto flex max-w-7xl flex-col gap-8 px-6 pb-12 md:px-8">
+          <Projects />
+          <Skills />
+          <Contact />
+        </div>
       </main>
 
       <Footer />

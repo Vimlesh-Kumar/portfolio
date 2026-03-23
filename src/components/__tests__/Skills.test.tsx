@@ -1,40 +1,37 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
-import { describe, it, expect, vi } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import Skills from "../Skills";
 
-// Setup mock for framer-motion since it relies on intersection observer
-vi.mock("framer-motion", () => {
-  return {
-    motion: {
-      div: ({ children, ...props }: any) => {
-        const { initial, whileInView, viewport, variants, ...validProps } =
-          props;
-        return <div {...validProps}>{children}</div>;
-      },
+vi.mock("framer-motion", () => ({
+  motion: {
+    div: ({ children, ...props }: any) => {
+      const { initial, whileInView, viewport, transition, ...validProps } =
+        props;
+      return <div {...validProps}>{children}</div>;
     },
-  };
-});
+  },
+}));
 
-describe("Skills Component", () => {
-  it("renders without crashing", () => {
+describe("Skills", () => {
+  it("renders the skills heading", () => {
     render(<Skills />);
-    expect(screen.getByText("Core Architecture Stack")).toBeInTheDocument();
+    expect(
+      screen.getByText("Engineering coverage from polished UI to production systems."),
+    ).toBeInTheDocument();
   });
 
-  it("renders skill categories", () => {
+  it("renders skill groups", () => {
     render(<Skills />);
     expect(screen.getByText("Frontend")).toBeInTheDocument();
     expect(screen.getByText("Backend")).toBeInTheDocument();
-    expect(screen.getByText("Cloud / DevOps")).toBeInTheDocument();
-    expect(screen.getByText("Databases")).toBeInTheDocument();
+    expect(screen.getByText("Cloud")).toBeInTheDocument();
+    expect(screen.getByText("Data")).toBeInTheDocument();
   });
 
-  it("renders specific skills", () => {
+  it("renders workflow capabilities", () => {
     render(<Skills />);
-    expect(screen.getByText("Vue.js")).toBeInTheDocument();
-    expect(screen.getByText("Node.js")).toBeInTheDocument();
-    expect(screen.getByText("Azure")).toBeInTheDocument();
-    expect(screen.getByText("PostgreSQL")).toBeInTheDocument();
+    expect(screen.getByText("Product-minded execution")).toBeInTheDocument();
+    expect(screen.getByText("Performance tuning")).toBeInTheDocument();
   });
 });

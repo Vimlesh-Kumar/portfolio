@@ -1,71 +1,67 @@
 import React from "react";
-import { render, screen, fireEvent } from "@testing-library/react";
-import { describe, it, expect, vi } from "vitest";
+import { fireEvent, render, screen } from "@testing-library/react";
+import { describe, expect, it, vi } from "vitest";
 import Navbar from "../Navbar";
 
-vi.mock("framer-motion", () => {
-  return {
-    motion: {
-      div: ({ children, ...props }: any) => {
-        const { initial, animate, ...validProps } = props;
-        return <div {...validProps}>{children}</div>;
-      },
+vi.mock("framer-motion", () => ({
+  motion: {
+    a: ({ children, ...props }: any) => {
+      const { initial, animate, ...validProps } = props;
+      return <a {...validProps}>{children}</a>;
     },
-  };
-});
+  },
+}));
 
-describe("Navbar Component", () => {
-  it("renders the brand or logo", () => {
+describe("Navbar", () => {
+  it("renders the portfolio brand", () => {
     render(<Navbar />);
     expect(screen.getByText("VK")).toBeInTheDocument();
+    expect(screen.getByText("Vimlesh Kumar")).toBeInTheDocument();
   });
 
-  it("contains navigation links", () => {
+  it("contains desktop navigation links", () => {
     render(<Navbar />);
-    const desktopLinks = screen.getAllByRole("link");
-    expect(desktopLinks.some((link) => link.textContent === "About")).toBe(
-      true,
-    );
-    expect(desktopLinks.some((link) => link.textContent === "Experience")).toBe(
-      true,
-    );
-    expect(desktopLinks.some((link) => link.textContent === "Projects")).toBe(
-      true,
-    );
-    expect(desktopLinks.some((link) => link.textContent === "Skills")).toBe(
-      true,
-    );
+    expect(screen.getAllByText("Projects").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("Skills").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("Contact").length).toBeGreaterThan(0);
   });
 
-  it("toggles the mobile menu open and closed", () => {
+  it("toggles the mobile menu", () => {
     render(<Navbar />);
-    const menuButton = screen.getByRole("button");
+    const button = screen.getByRole("button", {
+      name: "Toggle navigation menu",
+    });
 
-    // Desktop links normally present, mobile dropdown is hidden initially
-    const linkCountInitial = screen.getAllByRole("link").length;
+    fireEvent.click(button);
+    expect(screen.getAllByText("Let's Talk").length).toBeGreaterThan(0);
 
-    // Open menu
-    fireEvent.click(menuButton);
-    const linkCountOpen = screen.getAllByRole("link").length;
-    expect(linkCountOpen).toBeGreaterThan(linkCountInitial);
+    fireEvent.click(button);
+    expect(screen.queryAllByText("Let's Talk").length).toBe(1);
+  });
 
-    // Click a mobile link to close menu
-    // We expect the first new link added to the DOM to be 'About' in the mobile dropdown
-    const mobileLink = screen.getAllByText("About")[1]; // first is desktop, second is mobile
-    fireEvent.click(mobileLink);
+  it("closes the mobile menu when a mobile link is selected", () => {
+    render(<Navbar />);
+    const button = screen.getByRole("button", {
+      name: "Toggle navigation menu",
+    });
 
-    // Expect dropdown to close, reverting count
-    const linkCountClosed = screen.getAllByRole("link").length;
-    expect(linkCountClosed).toBe(linkCountInitial);
+    fireEvent.click(button);
+    const mobileProjectsLink = screen.getAllByText("Projects")[1];
+    fireEvent.click(mobileProjectsLink);
 
-    // Open menu again to test closing via the X icon
-    fireEvent.click(menuButton);
-    expect(screen.getAllByRole("link").length).toBeGreaterThan(
-      linkCountInitial,
-    );
+    expect(screen.queryAllByText("Let's Talk").length).toBe(1);
+  });
 
-    // Click closing X button
-    fireEvent.click(menuButton);
-    expect(screen.getAllByRole("link").length).toBe(linkCountInitial);
+  it("closes the mobile menu when the mobile cta is selected", () => {
+    render(<Navbar />);
+    const button = screen.getByRole("button", {
+      name: "Toggle navigation menu",
+    });
+
+    fireEvent.click(button);
+    const mobileCta = screen.getAllByText("Let's Talk")[1];
+    fireEvent.click(mobileCta);
+
+    expect(screen.queryAllByText("Let's Talk").length).toBe(1);
   });
 });
