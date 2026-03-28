@@ -17,12 +17,18 @@ const App = () => {
   });
 
   return (
-    <div className="relative min-h-screen overflow-x-hidden bg-[var(--color-bg)] text-[var(--color-text)] selection:bg-cyan-300/30 selection:text-white">
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(34,211,238,0.14),_transparent_28%),radial-gradient(circle_at_80%_20%,_rgba(139,92,246,0.18),_transparent_26%),radial-gradient(circle_at_bottom_right,_rgba(16,185,129,0.14),_transparent_22%)]" />
+    <div className="relative min-h-screen overflow-x-hidden" style={{ backgroundColor: 'var(--surface-bg)', color: 'var(--text-secondary)' }}>
+      <div
+        className="pointer-events-none absolute inset-0"
+        style={{ background: 'var(--overlay-gradient)' }}
+      />
 
       <motion.div
-        className="fixed inset-x-0 top-0 z-50 h-1 origin-left bg-gradient-to-r from-cyan-400 via-sky-400 to-emerald-400"
-        style={{ scaleX }}
+        className="fixed inset-x-0 top-0 z-50 h-1 origin-left"
+        style={{
+          scaleX,
+          background: `linear-gradient(to right, var(--progress-from), var(--progress-via), var(--progress-to))`,
+        }}
       />
 
       <Navbar />

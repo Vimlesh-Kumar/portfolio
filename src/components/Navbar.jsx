@@ -1,8 +1,13 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Rocket } from "lucide-react";
+import ThemeToggle from "./ThemeToggle";
 
-const navItems = ["Projects", "Skills", "Contact"];
+const navItems = [
+  { label: "Projects", icon: "🚀" },
+  { label: "Skills", icon: "⚡" },
+  { label: "Contact", icon: "✉️" },
+];
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -16,43 +21,78 @@ const Navbar = () => {
           animate={{ opacity: 1, y: 0 }}
           className="flex items-center gap-3"
         >
-          <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-cyan-300 to-sky-500 text-sm font-black tracking-[0.24em] text-slate-950">
+          <span
+            className="flex h-11 w-11 items-center justify-center rounded-2xl text-sm font-black tracking-[0.24em]"
+            style={{
+              background: 'linear-gradient(135deg, var(--accent-primary), var(--accent-emerald))',
+              color: 'var(--cta-text)',
+            }}
+          >
             VK
           </span>
           <div>
-            <p className="text-sm font-semibold uppercase tracking-[0.3em] text-slate-400">
+            <p
+              className="text-sm font-semibold uppercase tracking-[0.3em]"
+              style={{ color: 'var(--text-dim)' }}
+            >
               Developer
             </p>
-            <p className="text-sm text-white">Vimlesh Kumar</p>
+            <p className="text-sm" style={{ color: 'var(--text-primary)' }}>
+              Vimlesh Kumar
+            </p>
           </div>
         </motion.a>
 
         <div className="hidden items-center gap-2 md:flex">
           {navItems.map((item) => (
             <a
-              key={item}
-              href={`#${item.toLowerCase()}`}
-              className="rounded-full px-4 py-2 text-sm font-medium text-slate-300 transition hover:bg-white/8 hover:text-white"
+              key={item.label}
+              href={`#${item.label.toLowerCase()}`}
+              className="rounded-full px-4 py-2 text-sm font-medium transition"
+              style={{ color: 'var(--text-muted)' }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = 'var(--surface-hover)';
+                e.currentTarget.style.color = 'var(--text-primary)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'transparent';
+                e.currentTarget.style.color = 'var(--text-muted)';
+              }}
             >
-              {item}
+              {item.label}
             </a>
           ))}
           <a
             href="mailto:vimlesh11072000@gmail.com"
-            className="ml-2 rounded-full border border-cyan-300/30 bg-cyan-300/12 px-4 py-2 text-sm font-semibold text-cyan-100 transition hover:border-cyan-300/50 hover:bg-cyan-300/18"
+            className="ml-2 flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold transition"
+            style={{
+              border: '1px solid var(--border-hover)',
+              background: 'var(--accent-primary-faded)',
+              color: 'var(--accent-primary-text)',
+            }}
           >
+            <Rocket className="h-3.5 w-3.5" />
             Let&apos;s Talk
           </a>
+          <ThemeToggle />
         </div>
 
-        <button
-          type="button"
-          aria-label="Toggle navigation menu"
-          onClick={() => setIsMenuOpen((open) => !open)}
-          className="rounded-xl border border-white/10 bg-white/5 p-2 text-slate-200 transition hover:bg-white/10 md:hidden"
-        >
-          {isMenuOpen ? <X size={22} /> : <Menu size={22} />}
-        </button>
+        <div className="flex items-center gap-2 md:hidden">
+          <ThemeToggle />
+          <button
+            type="button"
+            aria-label="Toggle navigation menu"
+            onClick={() => setIsMenuOpen((open) => !open)}
+            className="rounded-xl p-2 transition"
+            style={{
+              border: '1px solid var(--border-subtle)',
+              background: 'var(--surface-subtle)',
+              color: 'var(--text-secondary)',
+            }}
+          >
+            {isMenuOpen ? <X size={22} /> : <Menu size={22} />}
+          </button>
+        </div>
       </nav>
 
       {isMenuOpen && (
@@ -61,19 +101,23 @@ const Navbar = () => {
             <div className="flex flex-col gap-1">
               {navItems.map((item) => (
                 <a
-                  key={item}
-                  href={`#${item.toLowerCase()}`}
+                  key={item.label}
+                  href={`#${item.label.toLowerCase()}`}
                   onClick={() => setIsMenuOpen(false)}
-                  className="rounded-xl px-4 py-3 text-sm font-medium text-slate-200 transition hover:bg-white/8"
+                  className="flex items-center gap-2 rounded-xl px-4 py-3 text-sm font-medium transition"
+                  style={{ color: 'var(--text-secondary)' }}
                 >
-                  {item}
+                  <span>{item.icon}</span>
+                  {item.label}
                 </a>
               ))}
               <a
                 href="mailto:vimlesh11072000@gmail.com"
                 onClick={() => setIsMenuOpen(false)}
-                className="rounded-xl px-4 py-3 text-sm font-semibold text-cyan-100 transition hover:bg-cyan-300/12"
+                className="flex items-center gap-2 rounded-xl px-4 py-3 text-sm font-semibold transition"
+                style={{ color: 'var(--accent-primary-text)' }}
               >
+                <Rocket className="h-3.5 w-3.5" />
                 Let&apos;s Talk
               </a>
             </div>

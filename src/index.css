@@ -1,12 +1,181 @@
 @import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap");
 @import "tailwindcss";
 
+/* ── Design Tokens (Dark – default) ────────────────────────── */
 @theme {
   --font-sans: "Space Grotesk", system-ui, sans-serif;
   --color-bg: #060816;
   --color-text: #e2e8f0;
 }
 
+:root {
+  /* Surfaces */
+  --surface-bg: #060816;
+  --surface-card: rgba(15, 23, 42, 0.72);
+  --surface-card-end: rgba(15, 23, 42, 0.44);
+  --surface-hover: rgba(255, 255, 255, 0.10);
+  --surface-subtle: rgba(255, 255, 255, 0.06);
+
+  /* Text */
+  --text-primary: #ffffff;
+  --text-secondary: #e2e8f0;
+  --text-muted: #94a3b8;
+  --text-dim: #64748b;
+
+  /* Borders */
+  --border-subtle: rgba(255, 255, 255, 0.10);
+  --border-hover: rgba(34, 211, 238, 0.40);
+
+  /* Accents */
+  --accent-primary: #22d3ee;
+  --accent-primary-faded: rgba(34, 211, 238, 0.12);
+  --accent-primary-text: #cffafe;
+  --accent-emerald: #34d399;
+  --accent-fuchsia: rgba(232, 121, 249, 0.08);
+  --accent-fuchsia-border: rgba(232, 121, 249, 0.20);
+  --accent-fuchsia-text: #f0abfc;
+
+  /* Glass panel */
+  --glass-bg: linear-gradient(180deg, rgba(15, 23, 42, 0.72) 0%, rgba(15, 23, 42, 0.44) 100%);
+  --glass-border: rgba(255, 255, 255, 0.10);
+  --glass-shadow: 0 24px 80px rgba(2, 6, 23, 0.45);
+  --glass-inset: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  --glass-blur: blur(22px);
+
+  /* Background gradients */
+  --body-bg: radial-gradient(circle at top, rgba(34, 211, 238, 0.08), transparent 28%),
+    linear-gradient(180deg, #07101f 0%, #050814 48%, #03050d 100%);
+  --overlay-gradient: radial-gradient(circle_at_top_left, rgba(34, 211, 238, 0.14), transparent 28%),
+    radial-gradient(circle_at_80%_20%, rgba(139, 92, 246, 0.18), transparent 26%),
+    radial-gradient(circle_at_bottom_right, rgba(16, 185, 129, 0.14), transparent 22%);
+
+  /* Progress bar */
+  --progress-from: #22d3ee;
+  --progress-via: #38bdf8;
+  --progress-to: #34d399;
+
+  /* Selection */
+  --selection-bg: rgba(34, 211, 238, 0.30);
+  --selection-text: #ffffff;
+
+  /* Scrollbar */
+  --scrollbar-track: #09101d;
+  --scrollbar-thumb: linear-gradient(180deg, #155e75, #0f766e);
+  --scrollbar-thumb-hover: linear-gradient(180deg, #0891b2, #0d9488);
+
+  /* CTA */
+  --cta-bg: #ffffff;
+  --cta-text: #020617;
+  --cta-hover: #cffafe;
+
+  /* Tag/pill */
+  --tag-bg: rgba(2, 6, 23, 0.45);
+  --tag-text: #e2e8f0;
+
+  /* Footer */
+  --footer-bg: rgba(2, 6, 23, 0.40);
+
+  /* Nav brand sub-text */
+  --brand-sub: #94a3b8;
+
+  /* Floating card inner */
+  --inner-card-bg: linear-gradient(145deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.03));
+  --stat-card-bg: rgba(2, 6, 23, 0.50);
+
+  /* Cyan accent card */
+  --cyan-card-border: rgba(34, 211, 238, 0.20);
+  --cyan-card-bg: rgba(34, 211, 238, 0.10);
+  --cyan-card-text: #cffafe;
+
+  /* Icon backgrounds */
+  --icon-bg: rgba(2, 6, 23, 0.55);
+}
+
+/* ── Light Theme ───────────────────────────────────────────── */
+[data-theme="light"] {
+  /* Surfaces */
+  --surface-bg: #f8fafc;
+  --surface-card: rgba(255, 255, 255, 0.85);
+  --surface-card-end: rgba(255, 255, 255, 0.60);
+  --surface-hover: rgba(0, 0, 0, 0.06);
+  --surface-subtle: rgba(0, 0, 0, 0.04);
+
+  /* Text */
+  --text-primary: #0f172a;
+  --text-secondary: #1e293b;
+  --text-muted: #475569;
+  --text-dim: #94a3b8;
+
+  /* Borders */
+  --border-subtle: rgba(0, 0, 0, 0.10);
+  --border-hover: rgba(6, 182, 212, 0.50);
+
+  /* Accents */
+  --accent-primary: #0891b2;
+  --accent-primary-faded: rgba(6, 182, 212, 0.12);
+  --accent-primary-text: #155e75;
+  --accent-emerald: #059669;
+  --accent-fuchsia: rgba(192, 38, 211, 0.08);
+  --accent-fuchsia-border: rgba(192, 38, 211, 0.20);
+  --accent-fuchsia-text: #a21caf;
+
+  /* Glass panel */
+  --glass-bg: linear-gradient(180deg, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0.60) 100%);
+  --glass-border: rgba(0, 0, 0, 0.08);
+  --glass-shadow: 0 24px 80px rgba(0, 0, 0, 0.08);
+  --glass-inset: inset 0 1px 0 rgba(255, 255, 255, 0.60);
+  --glass-blur: blur(22px);
+
+  /* Background gradients */
+  --body-bg: radial-gradient(circle at top, rgba(6, 182, 212, 0.06), transparent 28%),
+    linear-gradient(180deg, #f0f9ff 0%, #f8fafc 48%, #ffffff 100%);
+  --overlay-gradient: radial-gradient(circle_at_top_left, rgba(6, 182, 212, 0.08), transparent 28%),
+    radial-gradient(circle_at_80%_20%, rgba(139, 92, 246, 0.06), transparent 26%),
+    radial-gradient(circle_at_bottom_right, rgba(16, 185, 129, 0.06), transparent 22%);
+
+  /* Progress bar */
+  --progress-from: #0891b2;
+  --progress-via: #0284c7;
+  --progress-to: #059669;
+
+  /* Selection */
+  --selection-bg: rgba(6, 182, 212, 0.25);
+  --selection-text: #0f172a;
+
+  /* Scrollbar */
+  --scrollbar-track: #f1f5f9;
+  --scrollbar-thumb: linear-gradient(180deg, #0891b2, #0d9488);
+  --scrollbar-thumb-hover: linear-gradient(180deg, #06b6d4, #14b8a6);
+
+  /* CTA */
+  --cta-bg: #0f172a;
+  --cta-text: #ffffff;
+  --cta-hover: #155e75;
+
+  /* Tag/pill */
+  --tag-bg: rgba(241, 245, 249, 0.90);
+  --tag-text: #334155;
+
+  /* Footer */
+  --footer-bg: rgba(241, 245, 249, 0.60);
+
+  /* Nav brand sub-text */
+  --brand-sub: #64748b;
+
+  /* Floating card inner */
+  --inner-card-bg: linear-gradient(145deg, rgba(0, 0, 0, 0.04), rgba(0, 0, 0, 0.01));
+  --stat-card-bg: rgba(241, 245, 249, 0.80);
+
+  /* Cyan accent card */
+  --cyan-card-border: rgba(6, 182, 212, 0.25);
+  --cyan-card-bg: rgba(6, 182, 212, 0.08);
+  --cyan-card-text: #155e75;
+
+  /* Icon backgrounds */
+  --icon-bg: rgba(241, 245, 249, 0.80);
+}
+
+/* ── Global Styles ─────────────────────────────────────────── */
 html {
   scroll-behavior: smooth;
 }
@@ -14,45 +183,75 @@ html {
 body {
   min-height: 100vh;
   font-family: var(--font-sans);
-  background:
-    radial-gradient(circle at top, rgba(34, 211, 238, 0.08), transparent 28%),
-    linear-gradient(180deg, #07101f 0%, #050814 48%, #03050d 100%);
-  color: var(--color-text);
+  background: var(--body-bg);
+  background-color: var(--surface-bg);
+  color: var(--text-secondary);
   -webkit-font-smoothing: antialiased;
+  transition: background-color 0.4s ease, color 0.4s ease;
 }
 
 #root {
   min-height: 100vh;
 }
 
-.glass-panel {
-  position: relative;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background: linear-gradient(
-    180deg,
-    rgba(15, 23, 42, 0.72) 0%,
-    rgba(15, 23, 42, 0.44) 100%
-  );
-  box-shadow:
-    0 24px 80px rgba(2, 6, 23, 0.45),
-    inset 0 1px 0 rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(22px);
-  -webkit-backdrop-filter: blur(22px);
+::selection {
+  background: var(--selection-bg);
+  color: var(--selection-text);
 }
 
+/* ── Glass Panel ───────────────────────────────────────────── */
+.glass-panel {
+  position: relative;
+  border: 1px solid var(--glass-border);
+  background: var(--glass-bg);
+  box-shadow: var(--glass-shadow), var(--glass-inset);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  transition: background 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+}
+
+/* ── Theme Toggle Button ───────────────────────────────────── */
+.theme-toggle-btn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  border: 1px solid var(--border-subtle);
+  background: var(--surface-subtle);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: border-color 0.3s ease, background 0.3s ease, color 0.3s ease;
+}
+
+.theme-toggle-btn:hover {
+  border-color: var(--border-hover);
+  background: var(--surface-hover);
+  color: var(--accent-primary);
+}
+
+.theme-toggle-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── Scrollbar ─────────────────────────────────────────────── */
 ::-webkit-scrollbar {
   width: 10px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #09101d;
+  background: var(--scrollbar-track);
 }
 
 ::-webkit-scrollbar-thumb {
   border-radius: 999px;
-  background: linear-gradient(180deg, #155e75, #0f766e);
+  background: var(--scrollbar-thumb);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, #0891b2, #0d9488);
+  background: var(--scrollbar-thumb-hover);
 }

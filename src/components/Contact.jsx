@@ -7,6 +7,7 @@ import {
   Mail,
   MapPin,
   Send,
+  Rocket,
 } from "lucide-react";
 
 const channels = [
@@ -41,29 +42,62 @@ const Contact = () => {
         className="glass-panel grid gap-8 overflow-hidden rounded-[2rem] p-8 md:grid-cols-[1.1fr_0.9fr] md:p-10"
       >
         <div className="space-y-6">
-          <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.28em] text-cyan-200">
+          <div
+            className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.28em]"
+            style={{
+              border: '1px solid var(--border-subtle)',
+              background: 'var(--surface-subtle)',
+              color: 'var(--accent-primary-text)',
+            }}
+          >
             <Send className="h-3.5 w-3.5" />
             Contact
           </div>
 
           <div className="space-y-4">
-            <h2 className="max-w-xl text-3xl font-semibold tracking-tight text-white md:text-5xl">
+            <h2
+              className="max-w-xl text-3xl font-semibold tracking-tight md:text-5xl"
+              style={{ color: 'var(--text-primary)' }}
+            >
               Let&apos;s build a product that looks sharp and scales cleanly.
             </h2>
-            <p className="max-w-2xl text-base leading-7 text-slate-300 md:text-lg">
+            <p
+              className="max-w-2xl text-base leading-7 md:text-lg"
+              style={{ color: 'var(--text-muted)' }}
+            >
               Available for full-stack product work, frontend systems, and
               platform modernization across React, Node.js, and cloud-backed
               architectures.
             </p>
           </div>
 
-          <div className="flex flex-wrap gap-3 text-sm text-slate-300">
-            <div className="inline-flex items-center gap-2 rounded-full border border-emerald-400/30 bg-emerald-400/10 px-4 py-2">
-              <span className="h-2.5 w-2.5 rounded-full bg-emerald-400 shadow-[0_0_20px_rgba(52,211,153,0.8)]" />
+          <div className="flex flex-wrap gap-3 text-sm">
+            <div
+              className="inline-flex items-center gap-2 rounded-full px-4 py-2"
+              style={{
+                border: '1px solid rgba(52, 211, 153, 0.30)',
+                background: 'rgba(52, 211, 153, 0.10)',
+                color: 'var(--accent-emerald)',
+              }}
+            >
+              <span
+                className="h-2.5 w-2.5 rounded-full"
+                style={{
+                  background: 'var(--accent-emerald)',
+                  boxShadow: '0 0 20px rgba(52, 211, 153, 0.8)',
+                }}
+              />
               Open to selected freelance projects
             </div>
-            <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2">
-              <MapPin className="h-4 w-4 text-cyan-200" />
+            <div
+              className="inline-flex items-center gap-2 rounded-full px-4 py-2"
+              style={{
+                border: '1px solid var(--border-subtle)',
+                background: 'var(--surface-subtle)',
+                color: 'var(--text-muted)',
+              }}
+            >
+              <MapPin className="h-4 w-4" style={{ color: 'var(--accent-primary)' }} />
               Gandhinagar, India
             </div>
           </div>
@@ -85,23 +119,43 @@ const Contact = () => {
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.45, delay: index * 0.08 }}
-                className="group rounded-[1.5rem] border border-white/10 bg-white/6 p-5 transition duration-300 hover:-translate-y-1 hover:border-cyan-300/40 hover:bg-white/10"
+                className="group rounded-[1.5rem] p-5 transition duration-300 hover:-translate-y-1"
+                style={{
+                  border: '1px solid var(--border-subtle)',
+                  background: 'var(--surface-subtle)',
+                }}
               >
                 <div className="flex items-center justify-between gap-4">
                   <div className="flex items-center gap-4">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-white/10 bg-slate-950/60 text-cyan-200">
+                    <div
+                      className="flex h-12 w-12 items-center justify-center rounded-2xl"
+                      style={{
+                        border: '1px solid var(--border-subtle)',
+                        background: 'var(--icon-bg)',
+                        color: 'var(--accent-primary)',
+                      }}
+                    >
                       <Icon className="h-5 w-5" />
                     </div>
                     <div>
-                      <p className="text-sm uppercase tracking-[0.2em] text-slate-400">
+                      <p
+                        className="text-sm uppercase tracking-[0.2em]"
+                        style={{ color: 'var(--text-dim)' }}
+                      >
                         {channel.label}
                       </p>
-                      <p className="text-base font-medium text-white">
+                      <p
+                        className="text-base font-medium"
+                        style={{ color: 'var(--text-primary)' }}
+                      >
                         {channel.value}
                       </p>
                     </div>
                   </div>
-                  <ArrowUpRight className="h-5 w-5 text-slate-500 transition group-hover:text-cyan-200" />
+                  <ArrowUpRight
+                    className="h-5 w-5 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                    style={{ color: 'var(--text-dim)' }}
+                  />
                 </div>
               </motion.a>
             );
