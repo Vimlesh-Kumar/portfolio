@@ -6,8 +6,16 @@ import Projects from "../Projects";
 vi.mock("framer-motion", () => ({
   motion: {
     div: ({ children, ...props }: any) => {
-      const { initial, whileInView, viewport, transition, ...validProps } =
-        props;
+      const {
+        initial,
+        whileInView,
+        viewport,
+        transition,
+        animate,
+        exit,
+        layout,
+        ...validProps
+      } = props;
       return <div {...validProps}>{children}</div>;
     },
     a: ({ children, ...props }: any) => {
@@ -15,7 +23,12 @@ vi.mock("framer-motion", () => ({
         props;
       return <a {...validProps}>{children}</a>;
     },
+    button: ({ children, ...props }: any) => {
+      const { whileTap, ...validProps } = props;
+      return <button {...validProps}>{children}</button>;
+    },
   },
+  AnimatePresence: ({ children }: any) => <>{children}</>,
 }));
 
 describe("Projects", () => {
@@ -28,15 +41,17 @@ describe("Projects", () => {
 
   it("renders featured project titles", () => {
     render(<Projects />);
-    expect(screen.getByText("Realtime Weather Studio")).toBeInTheDocument();
-    expect(screen.getByText("Tatkal Reminder Platform")).toBeInTheDocument();
-    expect(screen.getByText("Zync Audio Sync")).toBeInTheDocument();
+    // First 3 visible projects (INITIAL_COUNT = 3)
+    expect(screen.getByText("Online Pathshala")).toBeInTheDocument();
+    expect(screen.getByText("VimPGP")).toBeInTheDocument();
+    expect(screen.getByText("SkyCast Weather")).toBeInTheDocument();
   });
 
   it("renders project stack tags", () => {
     render(<Projects />);
-    expect(screen.getByText("React")).toBeInTheDocument();
-    expect(screen.getByText("Node.js")).toBeInTheDocument();
-    expect(screen.getByText("Realtime")).toBeInTheDocument();
+    // Use getAllByText for tags that appear in multiple projects
+    expect(screen.getAllByText("Vue 3").length).toBeGreaterThanOrEqual(1);
+    expect(screen.getByText("Cryptography")).toBeInTheDocument();
+    expect(screen.getByText("TypeScript")).toBeInTheDocument();
   });
 });

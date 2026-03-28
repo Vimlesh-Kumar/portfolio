@@ -6,9 +6,13 @@ import Footer from "../Footer";
 describe("Footer", () => {
   it("renders the footer copy", () => {
     render(<Footer />);
-    expect(
-      screen.getByText(/Vimlesh Kumar\. Built with React and Tailwind\./i),
-    ).toBeInTheDocument();
+    // The text is split across elements by a Heart icon, so match the <p> tag specifically
+    const footerParagraph = screen.getByText((_, element) => {
+      if (element?.tagName !== "P") return false;
+      const text = element.textContent || "";
+      return /Vimlesh Kumar\. Built with.*React & Tailwind\./i.test(text);
+    });
+    expect(footerParagraph).toBeInTheDocument();
   });
 
   it("renders social links", () => {

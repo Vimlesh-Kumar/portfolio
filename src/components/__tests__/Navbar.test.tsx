@@ -2,6 +2,7 @@ import React from "react";
 import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import Navbar from "../Navbar";
+import { ThemeProvider } from "../../context/ThemeContext";
 
 vi.mock("framer-motion", () => ({
   motion: {
@@ -9,25 +10,37 @@ vi.mock("framer-motion", () => ({
       const { initial, animate, ...validProps } = props;
       return <a {...validProps}>{children}</a>;
     },
+    button: ({ children, ...props }: any) => {
+      const { whileTap, whileHover, ...validProps } = props;
+      return <button {...validProps}>{children}</button>;
+    },
+    span: ({ children, ...props }: any) => {
+      const { initial, animate, exit, transition, ...validProps } = props;
+      return <span {...validProps}>{children}</span>;
+    },
   },
+  AnimatePresence: ({ children }: any) => <>{children}</>,
 }));
+
+const renderWithProviders = (ui: React.ReactElement) =>
+  render(<ThemeProvider>{ui}</ThemeProvider>);
 
 describe("Navbar", () => {
   it("renders the portfolio brand", () => {
-    render(<Navbar />);
+    renderWithProviders(<Navbar />);
     expect(screen.getByText("VK")).toBeInTheDocument();
     expect(screen.getByText("Vimlesh Kumar")).toBeInTheDocument();
   });
 
   it("contains desktop navigation links", () => {
-    render(<Navbar />);
+    renderWithProviders(<Navbar />);
     expect(screen.getAllByText("Projects").length).toBeGreaterThan(0);
     expect(screen.getAllByText("Skills").length).toBeGreaterThan(0);
     expect(screen.getAllByText("Contact").length).toBeGreaterThan(0);
   });
 
   it("toggles the mobile menu", () => {
-    render(<Navbar />);
+    renderWithProviders(<Navbar />);
     const button = screen.getByRole("button", {
       name: "Toggle navigation menu",
     });
@@ -40,7 +53,7 @@ describe("Navbar", () => {
   });
 
   it("closes the mobile menu when a mobile link is selected", () => {
-    render(<Navbar />);
+    renderWithProviders(<Navbar />);
     const button = screen.getByRole("button", {
       name: "Toggle navigation menu",
     });
@@ -53,7 +66,7 @@ describe("Navbar", () => {
   });
 
   it("closes the mobile menu when the mobile cta is selected", () => {
-    render(<Navbar />);
+    renderWithProviders(<Navbar />);
     const button = screen.getByRole("button", {
       name: "Toggle navigation menu",
     });

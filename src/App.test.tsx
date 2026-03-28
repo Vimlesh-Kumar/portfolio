@@ -2,6 +2,7 @@ import React from "react";
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import App from "./App";
+import { ThemeProvider } from "./context/ThemeContext";
 
 vi.mock("framer-motion", async () => {
   const actual = (await vi.importActual("framer-motion")) as any;
@@ -10,6 +11,7 @@ vi.mock("framer-motion", async () => {
     ...actual,
     useScroll: vi.fn(() => ({ scrollYProgress: 0 })),
     useSpring: vi.fn(() => 0),
+    AnimatePresence: ({ children }: any) => <>{children}</>,
     motion: {
       div: ({ children, ...props }: any) => {
         const {
@@ -19,11 +21,13 @@ vi.mock("framer-motion", async () => {
           viewport,
           variants,
           transition,
+          exit,
+          layout,
           style,
           ...validProps
         } = props;
         return (
-          <div {...validProps}>
+          <div style={style} {...validProps}>
             {children}
           </div>
         );
@@ -44,13 +48,25 @@ vi.mock("framer-motion", async () => {
           </a>
         );
       },
+      button: ({ children, ...props }: any) => {
+        const { whileTap, whileHover, ...validProps } = props;
+        return <button {...validProps}>{children}</button>;
+      },
+      span: ({ children, ...props }: any) => {
+        const { initial, animate, exit, transition, ...validProps } = props;
+        return <span {...validProps}>{children}</span>;
+      },
     },
   };
 });
 
 describe("App", () => {
   it("renders the main portfolio shell", () => {
-    render(<App />);
+    render(
+      <ThemeProvider>
+        <App />
+      </ThemeProvider>,
+    );
 
     expect(screen.getByText("Vimlesh Kumar")).toBeInTheDocument();
     expect(
@@ -59,7 +75,11 @@ describe("App", () => {
   });
 
   it("contains the requested portfolio sections", () => {
-    render(<App />);
+    render(
+      <ThemeProvider>
+        <App />
+      </ThemeProvider>,
+    );
 
     expect(
       screen.getByText("Selected builds with product and engineering depth."),
