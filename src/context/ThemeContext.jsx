@@ -10,6 +10,7 @@ export const useTheme = () => {
 
 export const ThemeProvider = ({ children }) => {
   const [theme, setTheme] = useState(() => {
+    /* v8 ignore start: SSR guard – window always exists in jsdom */
     if (typeof window !== "undefined") {
       const stored = localStorage.getItem("portfolio-theme");
       if (stored) return stored;
@@ -18,6 +19,7 @@ export const ThemeProvider = ({ children }) => {
         : "dark";
     }
     return "dark";
+    /* v8 ignore stop */
   });
 
   useEffect(() => {

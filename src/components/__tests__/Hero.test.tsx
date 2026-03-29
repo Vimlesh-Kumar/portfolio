@@ -6,8 +6,12 @@ import Hero from "../Hero";
 vi.mock("framer-motion", () => ({
   motion: {
     div: ({ children, ...props }: any) => {
-      const { initial, animate, transition, ...validProps } = props;
+      const { initial, animate, whileHover, layout, layoutId, transition, ...validProps } = props;
       return <div {...validProps}>{children}</div>;
+    },
+    button: ({ children, ...props }: any) => {
+      const { whileTap, whileHover, layoutId, ...validProps } = props;
+      return <button {...validProps}>{children}</button>;
     },
   },
 }));
@@ -16,7 +20,7 @@ describe("Hero", () => {
   it("renders the main headline", () => {
     render(<Hero />);
     expect(
-      screen.getByText("Designing crisp interfaces and shipping cloud-ready products."),
+      screen.getByText("Building crisp UIs and scalable backend systems."),
     ).toBeInTheDocument();
   });
 
@@ -27,9 +31,8 @@ describe("Hero", () => {
     expect(screen.getByText("Resume")).toBeInTheDocument();
   });
 
-  it("shows portfolio metrics", () => {
+  it("shows interactive terminal", () => {
     render(<Hero />);
-    expect(screen.getByText("3+")).toBeInTheDocument();
-    expect(screen.getByText("Production launches")).toBeInTheDocument();
+    expect(screen.getByText("vimlesh@dev ~ zsh")).toBeInTheDocument();
   });
 });

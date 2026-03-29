@@ -1,12 +1,13 @@
-import React from "react";
-import { motion, useScroll, useSpring } from "framer-motion";
+import React, { useState, useEffect } from 'react';
+import { motion, useScroll, useSpring } from 'framer-motion';
 
-import Navbar from "./components/Navbar";
-import Hero from "./components/Hero";
-import Projects from "./components/Projects";
-import Skills from "./components/Skills";
-import Contact from "./components/Contact";
-import Footer from "./components/Footer";
+import Navbar from './components/Navbar';
+import Hero from './components/Hero';
+import Projects from './components/Projects';
+import Skills from './components/Skills';
+import Contact from './components/Contact';
+import Footer from './components/Footer';
+import CodeRain from './components/CodeRain';
 
 const App = () => {
   const { scrollYProgress } = useScroll();
@@ -16,11 +17,33 @@ const App = () => {
     restDelta: 0.001,
   });
 
+  const [mousePos, setMousePos] = useState({ x: '50%', y: '50%' });
+
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      setMousePos({
+        x: `${e.clientX}px`,
+        y: `${e.clientY}px`,
+      });
+    };
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
+
   return (
-    <div className="relative min-h-screen overflow-x-hidden" style={{ backgroundColor: 'var(--surface-bg)', color: 'var(--text-secondary)' }}>
+    <div 
+      className="relative min-h-screen overflow-x-hidden spotlight-container" 
+      style={{ 
+        backgroundColor: 'var(--surface-bg)', 
+        color: 'var(--text-secondary)',
+        '--mouse-x': mousePos.x,
+        '--mouse-y': mousePos.y
+      }}
+    >
+      <CodeRain />
       <div
         className="pointer-events-none absolute inset-0"
-        style={{ background: 'var(--overlay-gradient)' }}
+        style={{ background: 'var(--overlay-gradient)', zIndex: 0 }}
       />
 
       <motion.div
@@ -33,7 +56,7 @@ const App = () => {
 
       <Navbar />
 
-      <main>
+      <main className="relative z-10">
         <Hero />
 
         <div className="relative mx-auto flex max-w-7xl flex-col gap-8 px-6 pb-12 md:px-8">

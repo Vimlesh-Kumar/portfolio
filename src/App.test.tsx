@@ -1,5 +1,5 @@
 import React from "react";
-import { render, screen } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import App from "./App";
 import { ThemeProvider } from "./context/ThemeContext";
@@ -20,9 +20,10 @@ vi.mock("framer-motion", async () => {
           whileInView,
           viewport,
           variants,
-          transition,
           exit,
           layout,
+          layoutId,
+          whileHover,
           style,
           ...validProps
         } = props;
@@ -70,7 +71,7 @@ describe("App", () => {
 
     expect(screen.getByText("Vimlesh Kumar")).toBeInTheDocument();
     expect(
-      screen.getByText("Designing crisp interfaces and shipping cloud-ready products."),
+      screen.getByText("Building crisp UIs and scalable backend systems."),
     ).toBeInTheDocument();
   });
 
@@ -82,7 +83,7 @@ describe("App", () => {
     );
 
     expect(
-      screen.getByText("Selected builds with product and engineering depth."),
+      screen.getByText("Selected Work"),
     ).toBeInTheDocument();
     expect(
       screen.getByText("Engineering coverage from polished UI to production systems."),
@@ -90,5 +91,23 @@ describe("App", () => {
     expect(
       screen.getByText(/build a product that looks sharp and scales cleanly/i),
     ).toBeInTheDocument();
+  });
+
+  it("updates mouse position CSS custom properties on mousemove", () => {
+    render(
+      <ThemeProvider>
+        <App />
+      </ThemeProvider>,
+    );
+
+    const container = document.querySelector(".spotlight-container") as HTMLElement;
+    expect(container).toBeTruthy();
+
+    // Fire a mousemove event on window
+    fireEvent.mouseMove(window, { clientX: 200, clientY: 300 });
+
+    // The container should now have updated CSS custom properties
+    expect(container.style.getPropertyValue("--mouse-x")).toBe("200px");
+    expect(container.style.getPropertyValue("--mouse-y")).toBe("300px");
   });
 });

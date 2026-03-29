@@ -114,7 +114,7 @@ const Skills = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.45, delay: index * 0.08 }}
-                  className="rounded-[1.6rem] p-5"
+                  className="skill-card rounded-[1.6rem] p-5"
                   style={{
                     border: "1px solid var(--border-subtle)",
                     background: "var(--surface-subtle)",
@@ -145,7 +145,7 @@ const Skills = () => {
                       return (
                         <span
                           key={item.name}
-                          className="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium"
+                          className="skill-tag inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium cursor-default"
                           style={{
                             border: "1px solid var(--border-subtle)",
                             background: "var(--tag-bg)",
@@ -212,7 +212,7 @@ const Skills = () => {
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: index * 0.06 }}
-                className="flex items-center justify-between rounded-2xl px-4 py-3"
+                className="workflow-item flex items-center justify-between rounded-2xl px-4 py-3 cursor-default"
                 style={{
                   border: "1px solid var(--border-subtle)",
                   background: "var(--surface-subtle)",
@@ -237,7 +237,7 @@ const Skills = () => {
           </div>
 
           <div
-            className="mt-8 rounded-[1.6rem] p-5"
+            className="hover-glow mt-8 rounded-[1.6rem] p-5"
             style={{
               border: "1px solid var(--accent-fuchsia-border)",
               background: "var(--accent-fuchsia)",

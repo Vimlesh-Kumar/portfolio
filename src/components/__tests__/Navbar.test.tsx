@@ -77,4 +77,32 @@ describe("Navbar", () => {
 
     expect(screen.queryAllByText("Let's Talk").length).toBe(1);
   });
+
+  it("applies hover styles on mouseEnter and removes on mouseLeave for desktop links", () => {
+    renderWithProviders(<Navbar />);
+    // Get the desktop nav links (first instance of each since mobile menu is closed)
+    const projectsLink = screen.getAllByText("Projects")[0];
+    
+    // Simulate mouseEnter 
+    fireEvent.mouseEnter(projectsLink);
+    expect(projectsLink.style.color).toBe("var(--text-primary)");
+    expect(projectsLink.style.background).toBe("var(--surface-hover)");
+
+    // Simulate mouseLeave
+    fireEvent.mouseLeave(projectsLink);
+    expect(projectsLink.style.color).toBe("var(--text-muted)");
+    expect(projectsLink.style.background).toBe("transparent");
+  });
+
+  it("renders the Developer label", () => {
+    renderWithProviders(<Navbar />);
+    expect(screen.getByText("Developer")).toBeInTheDocument();
+  });
+
+  it("renders the desktop Let's Talk CTA with mailto link", () => {
+    renderWithProviders(<Navbar />);
+    const ctaLinks = screen.getAllByText("Let's Talk");
+    const desktopCta = ctaLinks[0].closest("a");
+    expect(desktopCta).toHaveAttribute("href", "mailto:vimlesh11072000@gmail.com");
+  });
 });
