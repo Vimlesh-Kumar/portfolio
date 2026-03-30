@@ -55,7 +55,11 @@ vi.mock("framer-motion", async () => {
       },
       span: ({ children, ...props }: any) => {
         const { initial, animate, exit, transition, ...validProps } = props;
-        return <span {...validProps}>{children}</span>;
+        return <span {...validProps}> {children} </span>;
+      },
+      form: ({ children, ...props }: any) => {
+        const { initial, animate, exit, ...validProps } = props;
+        return <form {...validProps}>{children}</form>;
       },
     },
   };
@@ -86,10 +90,10 @@ describe("App", () => {
       screen.getByText("Selected Work"),
     ).toBeInTheDocument();
     expect(
-      screen.getByText("Engineering coverage from polished UI to production systems."),
+      screen.getByText(/Have an idea\? Let's make it/i),
     ).toBeInTheDocument();
     expect(
-      screen.getByText(/build a product that looks sharp and scales cleanly/i),
+      screen.getByText(/Drop me a quick message and I'll get back to you/i),
     ).toBeInTheDocument();
   });
 

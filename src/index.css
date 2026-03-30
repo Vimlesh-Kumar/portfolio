@@ -450,6 +450,39 @@ body {
   transform: scaleX(1);
 }
 
+/* ── Contact Form Inputs ──────────────────────────────────── */
+.floating-input-group input:focus,
+.floating-input-group textarea:focus {
+  border-color: var(--border-hover) !important;
+}
+
+.floating-input-group input::placeholder,
+.floating-input-group textarea::placeholder {
+  color: transparent;
+}
+
+/* Submit button gradient shimmer */
+@keyframes gradient-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.contact-submit-btn {
+  background-size: 200% 200%;
+  animation: gradient-shift 3s ease infinite;
+}
+
+/* Form card subtle glow on hover */
+.contact-form-card {
+  transition: box-shadow 0.4s ease, border-color 0.4s ease;
+}
+
+.contact-form-card:hover {
+  box-shadow: 0 16px 48px rgba(34, 211, 238, 0.08);
+  border-color: var(--border-hover) !important;
+}
+
 /* ── Interactive Terminal ──────────────────────────────────── */
 .dev-terminal {
   font-family: var(--font-mono);
