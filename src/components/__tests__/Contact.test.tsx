@@ -1,5 +1,5 @@
 import React from "react";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { render, screen, fireEvent, waitFor, act } from "@testing-library/react";
 import { describe, expect, it, vi, beforeEach } from "vitest";
 import Contact from "../Contact";
 
@@ -74,6 +74,7 @@ describe("Contact Component", () => {
   });
 
   it("submits and resets status after success timeout", async () => {
+    const setTimeoutSpy = vi.spyOn(window, "setTimeout");
     (global.fetch as any).mockResolvedValueOnce({
       ok: true,
       json: async () => ({ success: true }),
@@ -84,22 +85,20 @@ describe("Contact Component", () => {
     fireEvent.change(screen.getByLabelText(/Your Message/i), { target: { name: "message", value: "Msg valid." } });
     fireEvent.click(screen.getByRole("button", { name: /Send Message/i }));
     
-    await waitFor(() => {
-      expect(screen.getByText(/Message Sent!/i)).toBeInTheDocument();
-    }, { timeout: 2000 });
+    await screen.findByText(/Message Sent!/i);
 
-    // Use fake timers JUST for the wait to avoid 5s real wait if possible, 
-    // but real timers are safer for the commit hook which might be slow.
-    // Let's use fake timers more carefully.
-    vi.useFakeTimers();
-    vi.advanceTimersByTime(5005);
-    await waitFor(() => {
-      expect(screen.queryByText(/Message Sent!/i)).not.toBeInTheDocument();
+    expect(setTimeoutSpy).toHaveBeenCalledWith(expect.any(Function), 5000);
+    const callback = setTimeoutSpy.mock.calls.find(call => call[1] === 5000)![0];
+    act(() => {
+      callback();
     });
-    vi.useRealTimers();
-  }, 10000);
 
-  it("resets status after error and network failure", async () => {
+    expect(screen.queryByText(/Message Sent!/i)).not.toBeInTheDocument();
+    setTimeoutSpy.mockRestore();
+  });
+
+  it("resets status after API error message", async () => {
+    const setTimeoutSpy = vi.spyOn(window, "setTimeout");
     (global.fetch as any).mockResolvedValueOnce({
       ok: true,
       json: async () => ({ success: false, message: "API Error" }),
@@ -110,29 +109,60 @@ describe("Contact Component", () => {
     fireEvent.change(screen.getByLabelText(/Your Message/i), { target: { name: "message", value: "Msg valid." } });
     fireEvent.click(screen.getByRole("button", { name: /Send Message/i }));
     
-    await waitFor(() => {
-      expect(screen.getByText(/API Error/i)).toBeInTheDocument();
-    }, { timeout: 2000 });
+    await screen.findByText(/API Error/i);
 
-    vi.useFakeTimers();
-    vi.advanceTimersByTime(4005);
-    await waitFor(() => {
-      expect(screen.queryByText(/API Error/i)).not.toBeInTheDocument();
+    expect(setTimeoutSpy).toHaveBeenCalledWith(expect.any(Function), 4000);
+    const callback = setTimeoutSpy.mock.calls.find(call => call[1] === 4000)![0];
+    act(() => {
+      callback();
     });
-    vi.useRealTimers();
 
-    (global.fetch as any).mockRejectedValueOnce(new Error("Net"));
+    expect(screen.queryByText(/API Error/i)).not.toBeInTheDocument();
+    setTimeoutSpy.mockRestore();
+  });
+
+  it("resets status after API fallback error message", async () => {
+    const setTimeoutSpy = vi.spyOn(window, "setTimeout");
+    (global.fetch as any).mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ success: false }),
+    });
+    render(<Contact />);
+    fireEvent.change(screen.getByLabelText(/Your Name/i), { target: { name: "name", value: "John" } });
+    fireEvent.change(screen.getByLabelText(/Email Address/i), { target: { name: "email", value: "j@t.com" } });
+    fireEvent.change(screen.getByLabelText(/Your Message/i), { target: { name: "message", value: "Msg valid." } });
     fireEvent.click(screen.getByRole("button", { name: /Send Message/i }));
     
-    await waitFor(() => {
-      expect(screen.getByText(/Network error/i)).toBeInTheDocument();
-    }, { timeout: 2000 });
+    await screen.findByText("Something went wrong. Please try again.");
 
-    vi.useFakeTimers();
-    vi.advanceTimersByTime(4005);
-    await waitFor(() => {
-      expect(screen.queryByText(/Network error/i)).not.toBeInTheDocument();
+    expect(setTimeoutSpy).toHaveBeenCalledWith(expect.any(Function), 4000);
+    const callback = setTimeoutSpy.mock.calls.find(call => call[1] === 4000)![0];
+    act(() => {
+      callback();
     });
-    vi.useRealTimers();
-  }, 15000);
+
+    expect(screen.queryByText("Something went wrong. Please try again.")).not.toBeInTheDocument();
+    setTimeoutSpy.mockRestore();
+  });
+
+  it("resets status after network failure", async () => {
+    const setTimeoutSpy = vi.spyOn(window, "setTimeout");
+    (global.fetch as any).mockRejectedValueOnce(new Error("Net"));
+    render(<Contact />);
+    fireEvent.change(screen.getByLabelText(/Your Name/i), { target: { name: "name", value: "John" } });
+    fireEvent.change(screen.getByLabelText(/Email Address/i), { target: { name: "email", value: "j@t.com" } });
+    fireEvent.change(screen.getByLabelText(/Your Message/i), { target: { name: "message", value: "Msg valid." } });
+    fireEvent.click(screen.getByRole("button", { name: /Send Message/i }));
+    
+    await screen.findByText(/Network error/i);
+
+    expect(setTimeoutSpy).toHaveBeenCalledWith(expect.any(Function), 4000);
+    const callback = setTimeoutSpy.mock.calls.find(call => call[1] === 4000)![0];
+    act(() => {
+      callback();
+    });
+
+    expect(screen.queryByText(/Network error/i)).not.toBeInTheDocument();
+    setTimeoutSpy.mockRestore();
+  });
 });

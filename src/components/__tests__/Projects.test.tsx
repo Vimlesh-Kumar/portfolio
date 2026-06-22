@@ -53,9 +53,9 @@ describe("Projects", () => {
   it("renders featured project titles", () => {
     render(<Projects />);
     // First 3 visible projects (INITIAL_COUNT = 3)
+    expect(screen.getByText("Squel.js")).toBeInTheDocument();
     expect(screen.getByText("Online Pathshala")).toBeInTheDocument();
     expect(screen.getByText("VimPGP")).toBeInTheDocument();
-    expect(screen.getByText("SkyCast Weather")).toBeInTheDocument();
   });
 
   it("renders project stack tags", () => {
@@ -63,27 +63,31 @@ describe("Projects", () => {
     // Use getAllByText for tags that appear in multiple projects
     expect(screen.getAllByText("Vue 3").length).toBeGreaterThanOrEqual(1);
     expect(screen.getByText("Cryptography")).toBeInTheDocument();
-    expect(screen.getByText("TypeScript")).toBeInTheDocument();
+    
+    // Open modal to see projects that use TypeScript
+    const viewAllBtn = screen.getByText(/View All 11 Projects/);
+    fireEvent.click(viewAllBtn);
+    expect(screen.getAllByText("TypeScript").length).toBeGreaterThanOrEqual(1);
   });
 
   it("renders the 'View All' button", () => {
     render(<Projects />);
-    expect(screen.getByText(/View All 10 Projects/)).toBeInTheDocument();
+    expect(screen.getByText(/View All 11 Projects/)).toBeInTheDocument();
   });
 
   it("opens the modal when 'View All' is clicked", () => {
     render(<Projects />);
-    const viewAllBtn = screen.getByText(/View All 10 Projects/);
+    const viewAllBtn = screen.getByText(/View All 11 Projects/);
     fireEvent.click(viewAllBtn);
     expect(screen.getByText("All Projects Collection")).toBeInTheDocument();
-    expect(screen.getByText(/Explore all 10 projects/)).toBeInTheDocument();
+    expect(screen.getByText(/Explore all 11 projects/)).toBeInTheDocument();
   });
 
   it("locks body scroll when modal opens and unlocks on close", () => {
     render(<Projects />);
     
     // Open modal
-    const viewAllBtn = screen.getByText(/View All 10 Projects/);
+    const viewAllBtn = screen.getByText(/View All 11 Projects/);
     fireEvent.click(viewAllBtn);
     expect(document.body.style.overflow).toBe("hidden");
 
@@ -97,7 +101,7 @@ describe("Projects", () => {
     render(<Projects />);
     
     // Open modal
-    fireEvent.click(screen.getByText(/View All 10 Projects/));
+    fireEvent.click(screen.getByText(/View All 11 Projects/));
     expect(screen.getByText("All Projects Collection")).toBeInTheDocument();
 
     // Click overlay (the modal-overlay div)
@@ -109,7 +113,7 @@ describe("Projects", () => {
   it("does not close modal when modal content is clicked", () => {
     render(<Projects />);
     
-    fireEvent.click(screen.getByText(/View All 10 Projects/));
+    fireEvent.click(screen.getByText(/View All 11 Projects/));
     const modalContent = screen.getByText("All Projects Collection").closest(".modal-content")!;
     fireEvent.click(modalContent);
     // Modal should still be open
@@ -118,7 +122,7 @@ describe("Projects", () => {
 
   it("renders all projects in the modal", () => {
     render(<Projects />);
-    fireEvent.click(screen.getByText(/View All 10 Projects/));
+    fireEvent.click(screen.getByText(/View All 11 Projects/));
     
     // Check for project titles that are only visible in the modal
     expect(screen.getByText("Zync Audio Sync")).toBeInTheDocument();
@@ -144,7 +148,7 @@ describe("Projects", () => {
   it("opens GitHub URL when clicking a project card without a live link", () => {
     render(<Projects />);
     // Open modal to see CashSync (no live link)
-    fireEvent.click(screen.getByText(/View All 10 Projects/));
+    fireEvent.click(screen.getByText(/View All 11 Projects/));
     const card = screen.getByText("CashSync Ledger").closest(".project-card")!;
     fireEvent.click(card);
     expect(windowOpenSpy).toHaveBeenCalledWith(
@@ -177,12 +181,13 @@ describe("Projects", () => {
 
   it("renders project images with alt text", () => {
     render(<Projects />);
+    expect(screen.getByAltText("Squel.js screenshot")).toBeInTheDocument();
     expect(screen.getByAltText("Online Pathshala screenshot")).toBeInTheDocument();
     expect(screen.getByAltText("VimPGP screenshot")).toBeInTheDocument();
   });
 
   it("renders the project count in description", () => {
     render(<Projects />);
-    expect(screen.getByText(/A curated set of 10 projects/)).toBeInTheDocument();
+    expect(screen.getByText(/A curated set of 11 projects/)).toBeInTheDocument();
   });
 });

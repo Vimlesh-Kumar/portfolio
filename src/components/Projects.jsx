@@ -15,10 +15,20 @@ import {
   GraduationCap,
   KeyRound,
   X,
-  Layers
+  Layers,
+  Database
 } from "lucide-react";
 
 const projects = [
+  {
+    title: "Squel.js",
+    description:
+      "Active maintainer of the flexible SQL query builder library for JavaScript. Modernized and updated features for cleaner, object-oriented query generation in Node.js and browsers.",
+    stack: ["JavaScript", "SQL", "Open Source", "npm Library"],
+    href: "https://github.com/hiddentao/squel",
+    image: "/projects/squel.png",
+    icon: Database,
+  },
   {
     title: "Online Pathshala",
     description:
@@ -122,6 +132,110 @@ const projects = [
 
 const INITIAL_COUNT = 3;
 
+const ProjectCard = ({ project, index }) => {
+  const Icon = project.icon;
+  return (
+    <motion.div
+      layout
+      initial={{ opacity: 0, scale: 0.9 }}
+      whileInView={{ opacity: 1, scale: 1 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.4, delay: index * 0.1 }}
+      className="project-card rounded-[1.75rem] w-full"
+      style={{
+        border: "1px solid var(--border-subtle)",
+        background: "var(--surface-subtle)",
+      }}
+      onClick={() => {
+        if (project.live) window.open(project.live, "_blank");
+        else window.open(project.href, "_blank");
+      }}
+    >
+      <div className="relative h-48 overflow-hidden rounded-t-[1.75rem]">
+        <img
+          src={project.image}
+          alt={`${project.title} screenshot`}
+          className="project-screenshot h-full w-full object-cover object-top"
+        />
+        <div
+          className="absolute inset-0 z-0"
+          style={{
+            background:
+              "linear-gradient(to top, var(--surface-bg) 0%, transparent 60%)",
+          }}
+        />
+        
+        <div className="absolute inset-x-0 bottom-4 flex justify-center project-expand-hint z-20">
+          <span className="bg-black/80 backdrop-blur-md border border-white/20 text-white text-xs font-semibold px-4 py-1.5 rounded-full flex items-center gap-2">
+            <ExternalLink className="h-3.5 w-3.5" /> View Project
+          </span>
+        </div>
+
+        <div className="absolute top-4 right-4 z-20 flex gap-2">
+          {project.live && (
+            <span className="bg-black/60 backdrop-blur-md border border-white/10 text-white text-[10px] font-bold tracking-wider uppercase px-3 py-1 rounded-full flex items-center gap-1.5 status-pulse shadow-xl">
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-400"></span> Live
+            </span>
+          )}
+          <a
+            href={project.href}
+            target="_blank"
+            rel="noreferrer"
+            onClick={(e) => e.stopPropagation()}
+            className="bg-black/50 backdrop-blur-md rounded-full p-1.5 border border-white/10 hover:bg-white/20 transition-colors"
+          >
+            <ArrowUpRight className="h-4 w-4 text-white" />
+          </a>
+        </div>
+      </div>
+
+      <div className="relative flex flex-col p-6 z-10">
+        <div className="flex items-center gap-3 w-full mb-3">
+          <div
+            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl"
+            style={{
+              border: "1px solid var(--border-subtle)",
+              background: "var(--icon-bg)",
+              color: "var(--accent-primary)",
+            }}
+          >
+            <Icon className="h-5 w-5" />
+          </div>
+          <h3
+            className="text-xl font-bold truncate pr-4"
+            style={{ color: "var(--text-primary)" }}
+          >
+            {project.title}
+          </h3>
+        </div>
+
+        <p
+          className="mb-6 flex-1 text-sm leading-relaxed line-clamp-3"
+          style={{ color: "var(--text-muted)" }}
+        >
+          {project.description}
+        </p>
+
+        <div className="flex flex-wrap gap-2 mt-auto">
+          {project.stack.map((item) => (
+            <span
+              key={item}
+              className="skill-tag rounded-full px-3 py-1 text-xs font-medium"
+              style={{
+                border: "1px solid var(--border-subtle)",
+                background: "var(--tag-bg)",
+                color: "var(--tag-text)",
+              }}
+            >
+              {item}
+            </span>
+          ))}
+        </div>
+      </div>
+    </motion.div>
+  );
+};
+
 const Projects = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const visibleProjects = projects.slice(0, INITIAL_COUNT);
@@ -135,110 +249,6 @@ const Projects = () => {
     }
   }, [modalOpen]);
 
-  const ProjectCard = ({ project, index }) => {
-    const Icon = project.icon;
-    return (
-      <motion.div
-        layout
-        initial={{ opacity: 0, scale: 0.9 }}
-        whileInView={{ opacity: 1, scale: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.4, delay: index * 0.1 }}
-        className="project-card rounded-[1.75rem] w-full"
-        style={{
-          border: "1px solid var(--border-subtle)",
-          background: "var(--surface-subtle)",
-        }}
-        onClick={() => {
-          if (project.live) window.open(project.live, "_blank");
-          else window.open(project.href, "_blank");
-        }}
-      >
-        <div className="relative h-48 overflow-hidden rounded-t-[1.75rem]">
-          <img
-            src={project.image}
-            alt={`${project.title} screenshot`}
-            className="project-screenshot h-full w-full object-cover object-top"
-          />
-          <div
-            className="absolute inset-0 z-0"
-            style={{
-              background:
-                "linear-gradient(to top, var(--surface-bg) 0%, transparent 60%)",
-            }}
-          />
-          
-          <div className="absolute inset-x-0 bottom-4 flex justify-center project-expand-hint z-20">
-            <span className="bg-black/80 backdrop-blur-md border border-white/20 text-white text-xs font-semibold px-4 py-1.5 rounded-full flex items-center gap-2">
-              <ExternalLink className="h-3.5 w-3.5" /> View Project
-            </span>
-          </div>
-
-          <div className="absolute top-4 right-4 z-20 flex gap-2">
-            {project.live && (
-              <span className="bg-black/60 backdrop-blur-md border border-white/10 text-white text-[10px] font-bold tracking-wider uppercase px-3 py-1 rounded-full flex items-center gap-1.5 status-pulse shadow-xl">
-                <span className="h-1.5 w-1.5 rounded-full bg-emerald-400"></span> Live
-              </span>
-            )}
-            <a
-              href={project.href}
-              target="_blank"
-              rel="noreferrer"
-              onClick={(e) => e.stopPropagation()}
-              className="bg-black/50 backdrop-blur-md rounded-full p-1.5 border border-white/10 hover:bg-white/20 transition-colors"
-            >
-              <ArrowUpRight className="h-4 w-4 text-white" />
-            </a>
-          </div>
-        </div>
-
-        <div className="relative flex flex-col p-6 z-10">
-          <div className="flex items-center gap-3 w-full mb-3">
-            <div
-              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl"
-              style={{
-                border: "1px solid var(--border-subtle)",
-                background: "var(--icon-bg)",
-                color: "var(--accent-primary)",
-              }}
-            >
-              <Icon className="h-5 w-5" />
-            </div>
-            <h3
-              className="text-xl font-bold truncate pr-4"
-              style={{ color: "var(--text-primary)" }}
-            >
-              {project.title}
-            </h3>
-          </div>
-
-          <p
-            className="mb-6 flex-1 text-sm leading-relaxed line-clamp-3"
-            style={{ color: "var(--text-muted)" }}
-          >
-            {project.description}
-          </p>
-
-          <div className="flex flex-wrap gap-2 mt-auto">
-            {project.stack.map((item) => (
-              <span
-                key={item}
-                className="skill-tag rounded-full px-3 py-1 text-xs font-medium"
-                style={{
-                  border: "1px solid var(--border-subtle)",
-                  background: "var(--tag-bg)",
-                  color: "var(--tag-text)",
-                }}
-              >
-                {item}
-              </span>
-            ))}
-          </div>
-        </div>
-      </motion.div>
-    );
-  };
-
   return (
     <section id="projects" className="scroll-mt-28">
       <motion.div
@@ -246,7 +256,7 @@ const Projects = () => {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-120px" }}
         transition={{ duration: 0.7, ease: "easeOut" }}
-        className="glass-panel rounded-[2rem] p-8 md:p-10"
+        className="glass-panel rounded-4xl p-8 md:p-10"
       >
         <div className="mb-10 flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
           <div className="space-y-3 relative">
@@ -262,7 +272,7 @@ const Projects = () => {
             >
               Selected Work 
             </h2>
-            <div className="absolute -left-6 top-1/2 -translate-y-1/2 w-2 h-16 rounded-full bg-gradient-to-b from-cyan-400 to-emerald-400 opacity-50 blur-sm"></div>
+            <div className="absolute -left-6 top-1/2 -translate-y-1/2 w-2 h-16 rounded-full bg-linear-to-b from-cyan-400 to-emerald-400 opacity-50 blur-sm"></div>
           </div>
           <p
             className="max-w-xl text-sm leading-7 md:text-base"

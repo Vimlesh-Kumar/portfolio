@@ -341,23 +341,6 @@ const Contact = () => {
               <div
                 className="inline-flex items-center gap-2 rounded-full px-4 py-2"
                 style={{
-                  border: "1px solid rgba(52, 211, 153, 0.30)",
-                  background: "rgba(52, 211, 153, 0.10)",
-                  color: "var(--accent-emerald)",
-                }}
-              >
-                <span
-                  className="h-2.5 w-2.5 rounded-full status-pulse"
-                  style={{
-                    background: "var(--accent-emerald)",
-                    boxShadow: "0 0 20px rgba(52, 211, 153, 0.8)",
-                  }}
-                />
-                Open to selected freelance projects
-              </div>
-              <div
-                className="inline-flex items-center gap-2 rounded-full px-4 py-2"
-                style={{
                   border: "1px solid var(--border-subtle)",
                   background: "var(--surface-subtle)",
                   color: "var(--text-muted)",
