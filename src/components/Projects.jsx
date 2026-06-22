@@ -18,6 +18,30 @@ import {
   Layers,
   Database
 } from "lucide-react";
+import TechIcon, { getBrandColor } from "./TechIcon";
+
+// Subcomponent for interactive technology tags inside project cards
+const ProjectTechTag = ({ name }) => {
+  const [hovered, setHovered] = useState(false);
+  const brandColor = getBrandColor(name);
+  return (
+    <span
+      className="skill-tag inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-medium cursor-default transition-all duration-300"
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      style={{
+        border: hovered ? `1px solid ${brandColor}` : "1px solid var(--border-subtle)",
+        background: hovered ? `${brandColor}18` : "var(--tag-bg)",
+        color: hovered ? "var(--text-primary)" : "var(--tag-text)",
+        boxShadow: hovered ? `0 4px 12px ${brandColor}20` : "none",
+        transform: hovered ? "translateY(-1.5px)" : "none"
+      }}
+    >
+      <TechIcon name={name} size={11} />
+      {name}
+    </span>
+  );
+};
 
 const projects = [
   {
@@ -53,7 +77,7 @@ const projects = [
     title: "SkyCast Weather",
     description:
       "A responsive weather dashboard with clean forecasting flows, location search, and fast TypeScript-powered rendering. Deployed at skycast.vimlesh.dev.",
-    stack: ["React", "TypeScript", "REST API"],
+    stack: ["Vue 3", "TypeScript", "REST API"],
     href: "https://github.com/Vimlesh-Kumar/weather-website",
     live: "https://skycast.vimlesh.dev/",
     image: "/projects/weather.png",
@@ -218,17 +242,7 @@ const ProjectCard = ({ project, index }) => {
 
         <div className="flex flex-wrap gap-2 mt-auto">
           {project.stack.map((item) => (
-            <span
-              key={item}
-              className="skill-tag rounded-full px-3 py-1 text-xs font-medium"
-              style={{
-                border: "1px solid var(--border-subtle)",
-                background: "var(--tag-bg)",
-                color: "var(--tag-text)",
-              }}
-            >
-              {item}
-            </span>
+            <ProjectTechTag key={item} name={item} />
           ))}
         </div>
       </div>

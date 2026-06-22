@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import {
   Cloud,
@@ -8,65 +8,77 @@ import {
   Server,
   Wand2,
   CircleCheckBig,
-  Atom,
-  Wind,
-  FileType2,
-  Zap,
-  Box,
-  Globe,
-  Cog,
-  GitBranch,
-  Rocket,
-  Scale,
-  Cylinder,
-  HardDrive,
-  Link2,
 } from "lucide-react";
+import TechIcon, { getBrandColor } from "./TechIcon";
 
 const skillGroups = [
   {
     title: "Frontend",
     icon: Layers3,
     items: [
-      { name: "React", icon: Atom },
-      { name: "Vue", icon: Wind },
-      { name: "Tailwind CSS", icon: Wind },
-      { name: "TypeScript", icon: FileType2 },
-      { name: "Framer Motion", icon: Zap },
+      { name: "Vue 3" },
+      { name: "Nuxt.js" },
+      { name: "Tailwind CSS" },
+      { name: "TypeScript" },
+      { name: "Framer Motion" },
     ],
   },
   {
     title: "Backend",
     icon: Server,
     items: [
-      { name: "Node.js", icon: Box },
-      { name: "Express", icon: Globe },
-      { name: ".NET", icon: Cog },
-      { name: "REST APIs", icon: Link2 },
-      { name: "Microservices", icon: Scale },
+      { name: "Node.js" },
+      { name: "Express" },
+      { name: ".NET" },
+      { name: "REST APIs" },
+      { name: "Microservices" },
     ],
   },
   {
     title: "Cloud",
     icon: Cloud,
     items: [
-      { name: "Azure", icon: Cloud },
-      { name: "CI/CD", icon: GitBranch },
-      { name: "Deployments", icon: Rocket },
-      { name: "Scalable Services", icon: Scale },
+      { name: "Azure" },
+      { name: "CI/CD" },
+      { name: "Deployments" },
+      { name: "Scalable Services" },
     ],
   },
   {
     title: "Data",
     icon: Database,
     items: [
-      { name: "PostgreSQL", icon: Cylinder },
-      { name: "SQL Server", icon: HardDrive },
-      { name: "MongoDB", icon: Database },
-      { name: "Prisma", icon: Link2 },
+      { name: "PostgreSQL" },
+      { name: "SQL Server" },
+      { name: "MongoDB" },
+      { name: "Prisma" },
     ],
   },
 ];
+
+// Inner component for an interactive, brand-glowing skill tag
+const SkillTag = ({ name }) => {
+  const [hovered, setHovered] = useState(false);
+  const brandColor = getBrandColor(name);
+
+  return (
+    <span
+      className="skill-tag inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium cursor-default transition-all duration-300"
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      style={{
+        border: hovered ? `1px solid ${brandColor}` : "1px solid var(--border-subtle)",
+        background: hovered ? `${brandColor}18` : "var(--tag-bg)",
+        color: hovered ? "var(--text-primary)" : "var(--tag-text)",
+        boxShadow: hovered ? `0 4px 20px ${brandColor}25` : "none",
+        transform: hovered ? "translateY(-2px) scale(1.05)" : "none"
+      }}
+    >
+      <TechIcon name={name} size={13} />
+      {name}
+    </span>
+  );
+};
 
 const toolbelt = [
   "UI systems",
@@ -87,7 +99,7 @@ const Skills = () => {
         transition={{ duration: 0.7, ease: "easeOut" }}
         className="grid gap-6 lg:grid-cols-[1.05fr_0.95fr]"
       >
-        <div className="glass-panel rounded-[2rem] p-8 md:p-10">
+        <div className="glass-panel rounded-4xl p-8 md:p-10">
           <div className="mb-8 space-y-3">
             <p
               className="text-xs font-semibold uppercase tracking-[0.3em]"
@@ -140,26 +152,9 @@ const Skills = () => {
                   </div>
 
                   <div className="flex flex-wrap gap-2">
-                    {group.items.map((item) => {
-                      const ItemIcon = item.icon;
-                      return (
-                        <span
-                          key={item.name}
-                          className="skill-tag inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium cursor-default"
-                          style={{
-                            border: "1px solid var(--border-subtle)",
-                            background: "var(--tag-bg)",
-                            color: "var(--tag-text)",
-                          }}
-                        >
-                          <ItemIcon
-                            className="h-3 w-3"
-                            style={{ color: "var(--accent-primary)" }}
-                          />
-                          {item.name}
-                        </span>
-                      );
-                    })}
+                    {group.items.map((item) => (
+                      <SkillTag key={item.name} name={item.name} />
+                    ))}
                   </div>
                 </motion.div>
               );
@@ -167,7 +162,7 @@ const Skills = () => {
           </div>
         </div>
 
-        <div className="glass-panel rounded-[2rem] p-8 md:p-10">
+        <div className="glass-panel rounded-4xl p-8 md:p-10">
           <div className="mb-8 flex items-start justify-between gap-4">
             <div>
               <p

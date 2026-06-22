@@ -17,7 +17,7 @@ const InteractiveSandbox = () => {
 
   return (
     <div 
-      className="relative z-10 overflow-hidden rounded-[1.5rem] transition-all duration-500" 
+      className="relative z-10 overflow-hidden rounded-3xl transition-all duration-500" 
       style={{ 
         background: "rgba(6, 8, 22, 0.7)", 
         border: "1px solid var(--border-subtle)", 
@@ -60,7 +60,7 @@ const InteractiveSandbox = () => {
           </div>
           <div className="text-center">
             <h4 className="text-sm font-bold text-white mb-1">Interactive Card</h4>
-            <p className="text-xs text-gray-400">Tweak the settings below to see React state in action.</p>
+            <p className="text-xs text-gray-400">Tweak the settings below to see reactive component state in action.</p>
           </div>
           <motion.button
             whileTap={{ scale: 0.9 }}

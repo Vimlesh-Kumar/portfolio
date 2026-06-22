@@ -31,7 +31,7 @@ const Hero = () => {
             }}
           >
             <Sparkles className="h-3.5 w-3.5" />
-            <span className="shimmer-text">Vue.js & React Expert</span>
+            <span className="shimmer-text">Vue 3 & Microservices Expert</span>
           </div>
 
           <div className="space-y-5">
@@ -52,9 +52,9 @@ const Hero = () => {
               style={{ color: 'var(--text-muted)' }}
             >
               I build product experiences that feel premium on the surface and
-              stay maintainable underneath. Specialized in modern frameworks like 
-              <strong style={{ color: "var(--accent-emerald)", fontWeight: 600 }}> Vue 3</strong> and <strong style={{ color: "var(--accent-primary)", fontWeight: 600 }}>React</strong>, 
-              backed by robust Node.js architectures.
+              stay maintainable underneath. Specialized in modern architectures like 
+              <strong style={{ color: "var(--accent-emerald)", fontWeight: 600 }}> Vue 3</strong>, <strong style={{ color: "var(--accent-primary)", fontWeight: 600 }}>Node.js</strong>, 
+              Express, and scalable microservices.
             </p>
           </div>
 
