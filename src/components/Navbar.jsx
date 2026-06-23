@@ -1,59 +1,130 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Rocket } from "lucide-react";
+import ThemeToggle from "./ThemeToggle";
+
+const navItems = [
+  { label: "Projects", icon: "🚀" },
+  { label: "Skills", icon: "⚡" },
+  { label: "Contact", icon: "✉️" },
+];
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <nav className="absolute top-0 left-0 right-0 z-40">
-      <div className="max-w-7xl mx-auto px-6 py-6 flex justify-between items-center text-white/90">
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="text-2xl font-bold tracking-tight text-white hover:text-white transition-colors cursor-pointer"
+    <header className="sticky top-0 z-40 px-4 pt-4 md:px-6">
+      <nav className="glass-panel mx-auto flex max-w-7xl items-center justify-between rounded-2xl px-5 py-4 md:px-6">
+        <motion.a
+          href="#hero"
+          initial={{ opacity: 0, y: -12 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="flex items-center gap-3"
         >
-          VK
-        </motion.div>
-
-        <div className="hidden md:flex gap-8 items-center text-sm font-medium">
-          {["About", "Experience", "Projects", "Skills"].map((item) => (
-            <a
-              key={item}
-              href={`#${item.toLowerCase()}`}
-              className="hover:text-white transition-colors"
+          <span
+            className="flex h-11 w-11 items-center justify-center rounded-2xl text-sm font-black tracking-[0.24em]"
+            style={{
+              background: 'linear-gradient(135deg, var(--accent-primary), var(--accent-emerald))',
+              color: 'var(--cta-text)',
+            }}
+          >
+            VK
+          </span>
+          <div>
+            <p
+              className="text-sm font-semibold uppercase tracking-[0.3em]"
+              style={{ color: 'var(--text-dim)' }}
             >
-              {item}
+              Developer
+            </p>
+            <p className="text-sm" style={{ color: 'var(--text-primary)' }}>
+              Vimlesh Kumar
+            </p>
+          </div>
+        </motion.a>
+
+        <div className="hidden items-center gap-2 md:flex">
+          {navItems.map((item) => (
+            <a
+              key={item.label}
+              href={`#${item.label.toLowerCase()}`}
+              className="rounded-full px-4 py-2 text-sm font-medium transition"
+              style={{ color: 'var(--text-muted)' }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = 'var(--surface-hover)';
+                e.currentTarget.style.color = 'var(--text-primary)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'transparent';
+                e.currentTarget.style.color = 'var(--text-muted)';
+              }}
+            >
+              {item.label}
             </a>
           ))}
+          <a
+            href="mailto:vimlesh11072000@gmail.com"
+            className="ml-2 flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold transition"
+            style={{
+              border: '1px solid var(--border-hover)',
+              background: 'var(--accent-primary-faded)',
+              color: 'var(--accent-primary-text)',
+            }}
+          >
+            <Rocket className="h-3.5 w-3.5" />
+            Let&apos;s Talk
+          </a>
+          <ThemeToggle />
         </div>
 
-        <button
-          className="md:hidden p-2 text-white"
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
-        >
-          {isMenuOpen ? <X size={28} /> : <Menu size={28} />}
-        </button>
-      </div>
+        <div className="flex items-center gap-2 md:hidden">
+          <ThemeToggle />
+          <button
+            type="button"
+            aria-label="Toggle navigation menu"
+            onClick={() => setIsMenuOpen((open) => !open)}
+            className="rounded-xl p-2 transition"
+            style={{
+              border: '1px solid var(--border-subtle)',
+              background: 'var(--surface-subtle)',
+              color: 'var(--text-secondary)',
+            }}
+          >
+            {isMenuOpen ? <X size={22} /> : <Menu size={22} />}
+          </button>
+        </div>
+      </nav>
 
-      {/* Mobile Dropdown */}
       {isMenuOpen && (
-        <div className="md:hidden bg-white/10 backdrop-blur-xl border-t border-white/10">
-          <div className="flex flex-col p-4 text-white">
-            {["About", "Experience", "Projects", "Skills"].map((item) => (
+        <div className="mx-auto mt-3 max-w-7xl px-1 md:hidden">
+          <div className="glass-panel rounded-2xl p-3">
+            <div className="flex flex-col gap-1">
+              {navItems.map((item) => (
+                <a
+                  key={item.label}
+                  href={`#${item.label.toLowerCase()}`}
+                  onClick={() => setIsMenuOpen(false)}
+                  className="flex items-center gap-2 rounded-xl px-4 py-3 text-sm font-medium transition"
+                  style={{ color: 'var(--text-secondary)' }}
+                >
+                  <span>{item.icon}</span>
+                  {item.label}
+                </a>
+              ))}
               <a
-                key={item}
-                href={`#${item.toLowerCase()}`}
+                href="mailto:vimlesh11072000@gmail.com"
                 onClick={() => setIsMenuOpen(false)}
-                className="py-3 px-4 hover:bg-white/10 rounded-lg font-medium"
+                className="flex items-center gap-2 rounded-xl px-4 py-3 text-sm font-semibold transition"
+                style={{ color: 'var(--accent-primary-text)' }}
               >
-                {item}
+                <Rocket className="h-3.5 w-3.5" />
+                Let&apos;s Talk
               </a>
-            ))}
+            </div>
           </div>
         </div>
       )}
-    </nav>
+    </header>
   );
 };
 

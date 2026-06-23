@@ -1,38 +1,69 @@
-import React from "react";
-import { motion, useScroll, useSpring } from "framer-motion";
+import React, { useState, useEffect } from 'react';
+import { motion, useScroll, useSpring } from 'framer-motion';
 
-import Navbar from "./components/Navbar";
-import Hero from "./components/Hero";
-import About from "./components/About";
-import Experience from "./components/Experience";
-import Projects from "./components/Projects";
-import Skills from "./components/Skills";
-import Footer from "./components/Footer";
+import Navbar from './components/Navbar';
+import Hero from './components/Hero';
+import Projects from './components/Projects';
+import Skills from './components/Skills';
+import Contact from './components/Contact';
+import Footer from './components/Footer';
+import CodeRain from './components/CodeRain';
 
 const App = () => {
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, {
-    stiffness: 100,
-    damping: 30,
+    stiffness: 110,
+    damping: 26,
     restDelta: 0.001,
   });
 
+  const [mousePos, setMousePos] = useState({ x: '50%', y: '50%' });
+
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      setMousePos({
+        x: `${e.clientX}px`,
+        y: `${e.clientY}px`,
+      });
+    };
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
+
   return (
-    <div className="bg-gray-50 min-h-screen text-gray-900 font-sans selection:bg-indigo-100 selection:text-indigo-900">
-      {/* Scroll Progress Indicator */}
+    <div 
+      className="relative min-h-screen overflow-x-hidden spotlight-container" 
+      style={{ 
+        backgroundColor: 'var(--surface-bg)', 
+        color: 'var(--text-secondary)',
+        '--mouse-x': mousePos.x,
+        '--mouse-y': mousePos.y
+      }}
+    >
+      <CodeRain />
+      <div
+        className="pointer-events-none absolute inset-0"
+        style={{ background: 'var(--overlay-gradient)', zIndex: 0 }}
+      />
+
       <motion.div
-        className="fixed top-0 left-0 right-0 h-1 bg-white z-50 origin-[0%]"
-        style={{ scaleX }}
+        className="fixed inset-x-0 top-0 z-50 h-1 origin-left"
+        style={{
+          scaleX,
+          background: `linear-gradient(to right, var(--progress-from), var(--progress-via), var(--progress-to))`,
+        }}
       />
 
       <Navbar />
-      <Hero />
 
-      <main className="max-w-7xl mx-auto px-6 py-24 space-y-32">
-        <About />
-        <Experience />
-        <Projects />
-        <Skills />
+      <main className="relative z-10">
+        <Hero />
+
+        <div className="relative mx-auto flex max-w-7xl flex-col gap-8 px-6 pb-12 md:px-8">
+          <Projects />
+          <Skills />
+          <Contact />
+        </div>
       </main>
 
       <Footer />

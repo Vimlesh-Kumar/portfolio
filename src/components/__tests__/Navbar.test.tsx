@@ -1,71 +1,108 @@
 import React from "react";
-import { render, screen, fireEvent } from "@testing-library/react";
-import { describe, it, expect, vi } from "vitest";
+import { fireEvent, render, screen } from "@testing-library/react";
+import { describe, expect, it, vi } from "vitest";
 import Navbar from "../Navbar";
+import { ThemeProvider } from "../../context/ThemeContext";
 
-vi.mock("framer-motion", () => {
-  return {
-    motion: {
-      div: ({ children, ...props }: any) => {
-        const { initial, animate, ...validProps } = props;
-        return <div {...validProps}>{children}</div>;
-      },
+vi.mock("framer-motion", () => ({
+  motion: {
+    a: ({ children, ...props }: any) => {
+      const { initial, animate, ...validProps } = props;
+      return <a {...validProps}>{children}</a>;
     },
-  };
-});
+    button: ({ children, ...props }: any) => {
+      const { whileTap, whileHover, ...validProps } = props;
+      return <button {...validProps}>{children}</button>;
+    },
+    span: ({ children, ...props }: any) => {
+      const { initial, animate, exit, transition, ...validProps } = props;
+      return <span {...validProps}>{children}</span>;
+    },
+  },
+  AnimatePresence: ({ children }: any) => <>{children}</>,
+}));
 
-describe("Navbar Component", () => {
-  it("renders the brand or logo", () => {
-    render(<Navbar />);
+const renderWithProviders = (ui: React.ReactElement) =>
+  render(<ThemeProvider>{ui}</ThemeProvider>);
+
+describe("Navbar", () => {
+  it("renders the portfolio brand", () => {
+    renderWithProviders(<Navbar />);
     expect(screen.getByText("VK")).toBeInTheDocument();
+    expect(screen.getByText("Vimlesh Kumar")).toBeInTheDocument();
   });
 
-  it("contains navigation links", () => {
-    render(<Navbar />);
-    const desktopLinks = screen.getAllByRole("link");
-    expect(desktopLinks.some((link) => link.textContent === "About")).toBe(
-      true,
-    );
-    expect(desktopLinks.some((link) => link.textContent === "Experience")).toBe(
-      true,
-    );
-    expect(desktopLinks.some((link) => link.textContent === "Projects")).toBe(
-      true,
-    );
-    expect(desktopLinks.some((link) => link.textContent === "Skills")).toBe(
-      true,
-    );
+  it("contains desktop navigation links", () => {
+    renderWithProviders(<Navbar />);
+    expect(screen.getAllByText("Projects").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("Skills").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("Contact").length).toBeGreaterThan(0);
   });
 
-  it("toggles the mobile menu open and closed", () => {
-    render(<Navbar />);
-    const menuButton = screen.getByRole("button");
+  it("toggles the mobile menu", () => {
+    renderWithProviders(<Navbar />);
+    const button = screen.getByRole("button", {
+      name: "Toggle navigation menu",
+    });
 
-    // Desktop links normally present, mobile dropdown is hidden initially
-    const linkCountInitial = screen.getAllByRole("link").length;
+    fireEvent.click(button);
+    expect(screen.getAllByText("Let's Talk").length).toBeGreaterThan(0);
 
-    // Open menu
-    fireEvent.click(menuButton);
-    const linkCountOpen = screen.getAllByRole("link").length;
-    expect(linkCountOpen).toBeGreaterThan(linkCountInitial);
+    fireEvent.click(button);
+    expect(screen.queryAllByText("Let's Talk").length).toBe(1);
+  });
 
-    // Click a mobile link to close menu
-    // We expect the first new link added to the DOM to be 'About' in the mobile dropdown
-    const mobileLink = screen.getAllByText("About")[1]; // first is desktop, second is mobile
-    fireEvent.click(mobileLink);
+  it("closes the mobile menu when a mobile link is selected", () => {
+    renderWithProviders(<Navbar />);
+    const button = screen.getByRole("button", {
+      name: "Toggle navigation menu",
+    });
 
-    // Expect dropdown to close, reverting count
-    const linkCountClosed = screen.getAllByRole("link").length;
-    expect(linkCountClosed).toBe(linkCountInitial);
+    fireEvent.click(button);
+    const mobileProjectsLink = screen.getAllByText("Projects")[1];
+    fireEvent.click(mobileProjectsLink);
 
-    // Open menu again to test closing via the X icon
-    fireEvent.click(menuButton);
-    expect(screen.getAllByRole("link").length).toBeGreaterThan(
-      linkCountInitial,
-    );
+    expect(screen.queryAllByText("Let's Talk").length).toBe(1);
+  });
 
-    // Click closing X button
-    fireEvent.click(menuButton);
-    expect(screen.getAllByRole("link").length).toBe(linkCountInitial);
+  it("closes the mobile menu when the mobile cta is selected", () => {
+    renderWithProviders(<Navbar />);
+    const button = screen.getByRole("button", {
+      name: "Toggle navigation menu",
+    });
+
+    fireEvent.click(button);
+    const mobileCta = screen.getAllByText("Let's Talk")[1];
+    fireEvent.click(mobileCta);
+
+    expect(screen.queryAllByText("Let's Talk").length).toBe(1);
+  });
+
+  it("applies hover styles on mouseEnter and removes on mouseLeave for desktop links", () => {
+    renderWithProviders(<Navbar />);
+    // Get the desktop nav links (first instance of each since mobile menu is closed)
+    const projectsLink = screen.getAllByText("Projects")[0];
+    
+    // Simulate mouseEnter 
+    fireEvent.mouseEnter(projectsLink);
+    expect(projectsLink.style.color).toBe("var(--text-primary)");
+    expect(projectsLink.style.background).toBe("var(--surface-hover)");
+
+    // Simulate mouseLeave
+    fireEvent.mouseLeave(projectsLink);
+    expect(projectsLink.style.color).toBe("var(--text-muted)");
+    expect(projectsLink.style.background).toBe("transparent");
+  });
+
+  it("renders the Developer label", () => {
+    renderWithProviders(<Navbar />);
+    expect(screen.getByText("Developer")).toBeInTheDocument();
+  });
+
+  it("renders the desktop Let's Talk CTA with mailto link", () => {
+    renderWithProviders(<Navbar />);
+    const ctaLinks = screen.getAllByText("Let's Talk");
+    const desktopCta = ctaLinks[0].closest("a");
+    expect(desktopCta).toHaveAttribute("href", "mailto:vimlesh11072000@gmail.com");
   });
 });
