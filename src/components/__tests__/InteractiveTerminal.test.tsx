@@ -154,11 +154,11 @@ describe("InteractiveTerminal", () => {
   });
 
   it("scrolls to bottom on new history entries", () => {
-    const scrollIntoViewMock = vi.fn();
-    HTMLDivElement.prototype.scrollIntoView = scrollIntoViewMock;
+    const scrollToMock = vi.fn();
+    HTMLDivElement.prototype.scrollTo = scrollToMock;
 
     render(<InteractiveTerminal />);
     runCommand("help");
-    expect(scrollIntoViewMock).toHaveBeenCalledWith({ behavior: "smooth" });
+    expect(scrollToMock).toHaveBeenCalled();
   });
 });

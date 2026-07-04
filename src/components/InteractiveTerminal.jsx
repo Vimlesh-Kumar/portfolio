@@ -7,17 +7,24 @@ const InteractiveTerminal = () => {
   ]);
   const [input, setInput] = useState("");
   const [currentDir, setCurrentDir] = useState("~");
-  const bottomRef = useRef(null);
+  const bodyRef = useRef(null);
   const inputRef = useRef(null);
 
   useEffect(() => {
-    if (bottomRef.current && typeof bottomRef.current.scrollIntoView === "function") {
-      bottomRef.current.scrollIntoView({ behavior: "smooth" });
+    if (bodyRef.current) {
+      if (typeof bodyRef.current.scrollTo === "function") {
+        bodyRef.current.scrollTo({
+          top: bodyRef.current.scrollHeight,
+          behavior: "smooth",
+        });
+      } else {
+        bodyRef.current.scrollTop = bodyRef.current.scrollHeight;
+      }
     }
   }, [history]);
 
   const handleFocus = () => {
-    inputRef.current?.focus();
+    inputRef.current?.focus({ preventScroll: true });
   };
 
   const pushOutput = (text, color) => {
@@ -352,7 +359,11 @@ const InteractiveTerminal = () => {
         <div className="mx-auto text-xs font-medium opacity-50">vimlesh@dev ~ zsh</div>
       </div>
       
-      <div className="dev-terminal-body font-mono flex-1 overflow-y-auto overflow-x-hidden p-5 text-[13px] leading-relaxed relative" style={{ scrollbarWidth: 'thin' }}>
+      <div 
+        ref={bodyRef}
+        className="dev-terminal-body font-mono flex-1 overflow-y-auto overflow-x-hidden p-5 text-[13px] leading-relaxed relative" 
+        style={{ scrollbarWidth: 'thin' }}
+      >
         {history.map((line, i) => (
           <div key={i} className="mb-3 whitespace-pre-wrap wrap-break-word">
             {line.type === "input" ? (
@@ -385,11 +396,9 @@ const InteractiveTerminal = () => {
               style={{ color: 'var(--accent-emerald)' }}
               autoComplete="off"
               spellCheck="false"
-              autoFocus
             />
           </div>
         </div>
-        <div ref={bottomRef} className="h-1 text-transparent select-none">.</div>
       </div>
     </div>
   );
