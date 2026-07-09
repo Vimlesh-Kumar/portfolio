@@ -234,7 +234,15 @@ const FloatingTextarea = ({ id, label, icon: Icon, value, onChange, maxLength })
   );
 };
 
-/* ── Main Contact Component ───────────────────────────────── */
+/**
+ * Contact
+ * -------
+ * Contact section pairing quick-contact cards with a validated message form.
+ * The form submits to Web3Forms and reflects `idle → sending → success | error`
+ * states inline.
+ *
+ * @returns {JSX.Element}
+ */
 const Contact = () => {
   const [formData, setFormData] = useState({ name: "", email: "", message: "" });
   const [status, setStatus] = useState("idle"); // idle | sending | success | error

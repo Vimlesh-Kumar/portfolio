@@ -1,8 +1,16 @@
 import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Moon, Sun } from "lucide-react";
-import { useTheme } from "../context/ThemeContext";
+import { useTheme } from "../context/theme-context";
 
+/**
+ * ThemeToggle
+ * -----------
+ * Button that switches between light and dark themes, with an animated
+ * sun/moon icon crossfade. Reads and updates the theme via {@link useTheme}.
+ *
+ * @returns {JSX.Element}
+ */
 const ThemeToggle = () => {
   const { theme, toggleTheme } = useTheme();
   const isDark = theme === "dark";

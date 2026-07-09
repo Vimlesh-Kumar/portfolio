@@ -20,11 +20,6 @@ export default defineConfig({
       exclude: [
         'src/assets/**',
         'src/setupTests.ts',
-        'src/components/TechIcon.jsx',
-        'src/components/CodeRain.jsx',
-        'src/components/InteractiveTerminal.jsx',
-        'src/components/Projects.jsx',
-        'src/components/Skills.jsx'
       ],
       thresholds: {
         lines: 100,

@@ -19,6 +19,14 @@ const socialLinks = [
   },
 ];
 
+/**
+ * Footer
+ * ------
+ * Closing band with the brand, quick section links, and social / contact
+ * shortcuts.
+ *
+ * @returns {JSX.Element}
+ */
 const Footer = () => {
   return (
     <footer className="px-6 pb-8 pt-2 md:px-8">

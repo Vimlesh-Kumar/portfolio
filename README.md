@@ -1,16 +1,111 @@
-# React + Vite
+<div align="center">
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# Vimlesh Kumar — Developer Portfolio
 
-Currently, two official plugins are available:
+**Full-Stack Engineer · Vue 3 · Node.js · Microservices**
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+A fast, animated, fully theme-aware personal portfolio — built like a production SaaS front end, with a design system, an interactive terminal, and a test suite at 100% coverage.
 
-## React Compiler
+![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=white)
+![Vite](https://img.shields.io/badge/Vite-7-646CFF?logo=vite&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind-4-38BDF8?logo=tailwindcss&logoColor=white)
+![Framer Motion](https://img.shields.io/badge/Framer%20Motion-12-F43F5E?logo=framer&logoColor=white)
+![Vitest](https://img.shields.io/badge/Vitest-4-6E9F18?logo=vitest&logoColor=white)
+![Coverage](https://img.shields.io/badge/coverage-100%25-brightgreen)
+![Tests](https://img.shields.io/badge/tests-151%20passing-brightgreen)
+![ESLint](https://img.shields.io/badge/lint-clean-4B32C3?logo=eslint&logoColor=white)
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+</div>
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## ✨ Highlights
+
+- **Design-system driven** — a single source of light/dark tokens in [`src/index.css`](src/index.css) powers every surface, accent, and gradient. Toggling the theme re-skins the whole app instantly.
+- **Interactive terminal** — a working shell (`help`, `whoami`, `ls`, `cd`, `cat`, `open`, `curl`, `github repos`…) that even fetches live GitHub data, with graceful offline fallbacks.
+- **Constellation background** — a canvas particle field that links nearby nodes and leans toward the cursor, plus aurora blobs and a spotlight-follows-mouse effect.
+- **Motion everywhere** — scroll-reveal sections, magnetic hovers, and micro-interactions via Framer Motion.
+- **Accessible & responsive** — semantic landmarks, keyboard-friendly controls, and a mobile menu.
+- **Engineered for review** — 100% test coverage (enforced), zero lint warnings, and clear separation of data / hooks / components.
+
+## 🧱 Tech Stack
+
+| Area        | Choices                                                       |
+| ----------- | ------------------------------------------------------------ |
+| Framework   | React 19 (automatic JSX runtime)                             |
+| Build tool  | Vite 7                                                       |
+| Styling     | Tailwind CSS 4 + CSS custom-property design tokens           |
+| Animation   | Framer Motion, custom canvas + CSS keyframes                 |
+| Icons       | lucide-react + hand-built brand SVGs                         |
+| Testing     | Vitest + Testing Library + jsdom                             |
+| Quality     | ESLint 9 (flat config), Husky pre-commit / pre-push hooks    |
+| Deploy      | Docker (multi-stage) ready                                   |
+
+## 🚀 Getting Started
+
+```bash
+# Install dependencies
+npm install
+
+# Start the dev server (http://localhost:5173)
+npm run dev
+
+# Production build + preview
+npm run build
+npm run preview
+```
+
+## 🧪 Quality & Testing
+
+This project treats a portfolio like production code.
+
+```bash
+npm test          # run the unit test suite (151 tests)
+npm run coverage  # run tests + enforce 100% coverage thresholds
+npm run lint      # ESLint (0 errors, 0 warnings)
+```
+
+Coverage thresholds are set to **100%** for statements, branches, functions, and lines in [`vite.config.js`](vite.config.js) — the build fails if coverage regresses. Non-deterministic canvas painting is the only code excluded, via explicit, commented `/* v8 ignore */` ranges (the physics it drives are unit-tested in isolation).
+
+## 📁 Project Structure
+
+```text
+src/
+├── components/           # UI sections & widgets (Hero, Projects, Skills, Contact…)
+│   └── __tests__/        # Component tests colocated per feature
+├── context/
+│   ├── theme-context.js  # Context + useTheme hook (component-free for Fast Refresh)
+│   └── ThemeContext.jsx  # ThemeProvider (persists theme + prefers-color-scheme)
+├── lib/                  # Framework-agnostic, unit-tested logic
+│   ├── brandColors.js    # Brand color map + resolver
+│   ├── particle.js       # Constellation particle physics
+│   └── techIcons.jsx     # Brand SVG icon catalogue
+├── index.css             # Design tokens (light/dark) + component styles
+├── App.jsx               # Root layout & section composition
+└── main.jsx              # Entry point
+```
+
+### Architecture notes
+
+- **Data / hooks / components are separated.** Pure logic (colors, particle physics, icon data) lives in `src/lib` and `src/context` so it is testable without rendering React and keeps components small.
+- **Theme lives in CSS variables.** JS only flips a `data-theme` attribute; the design tokens do the rest — no re-render cascade for styling.
+- **Lint enforces JSX-aware usage.** `react/jsx-uses-vars` is enabled so imports used only in JSX aren't false-flagged, replacing brittle ignore patterns.
+
+## 🐳 Docker
+
+```bash
+docker build -t portfolio .
+docker run -p 8080:80 portfolio
+```
+
+## 📬 Contact
+
+- **Email:** vimlesh11072000@gmail.com
+- **GitHub:** [@Vimlesh-Kumar](https://github.com/Vimlesh-Kumar)
+- **LinkedIn:** [in/vimlesh11](https://linkedin.com/in/vimlesh11)
+
+---
+
+<div align="center">
+<sub>Built with React, Vite & Tailwind — and a slightly obsessive attention to detail.</sub>
+</div>

@@ -35,4 +35,12 @@ describe("Hero", () => {
     render(<Hero />);
     expect(screen.getByText("vimlesh@dev ~ zsh")).toBeInTheDocument();
   });
+
+  it("renders the open-source collaborator credential linking to the squel repo", () => {
+    render(<Hero />);
+    const link = screen.getByRole("link", {
+      name: /Open Source Collaborator/i,
+    });
+    expect(link).toHaveAttribute("href", "https://github.com/hiddentao/squel");
+  });
 });

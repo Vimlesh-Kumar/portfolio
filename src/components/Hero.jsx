@@ -4,11 +4,21 @@ import {
   ArrowRight,
   Download,
   Github,
+  GitPullRequest,
   Linkedin,
   Sparkles,
 } from "lucide-react";
 import InteractiveTerminal from "./InteractiveTerminal";
 
+/**
+ * Hero
+ * ----
+ * Above-the-fold introduction: headline, value proposition, primary CTAs
+ * (view projects / start a conversation / resume), social links, and the
+ * interactive terminal preview.
+ *
+ * @returns {JSX.Element}
+ */
 const Hero = () => {
   return (
     <section
@@ -22,16 +32,34 @@ const Hero = () => {
           transition={{ duration: 0.8, ease: "easeOut" }}
           className="space-y-8"
         >
-          <div
-            className="inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs font-semibold uppercase tracking-[0.28em] hover-glow"
-            style={{
-              border: '1px solid var(--border-subtle)',
-              background: 'var(--surface-subtle)',
-              color: 'var(--accent-primary-text)',
-            }}
-          >
-            <Sparkles className="h-3.5 w-3.5" />
-            <span className="shimmer-text">Vue 3 & Microservices Expert</span>
+          <div className="flex flex-wrap items-center gap-3">
+            <div
+              className="inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs font-semibold uppercase tracking-[0.28em] hover-glow"
+              style={{
+                border: '1px solid var(--border-subtle)',
+                background: 'var(--surface-subtle)',
+                color: 'var(--accent-primary-text)',
+              }}
+            >
+              <Sparkles className="h-3.5 w-3.5" />
+              <span className="shimmer-text">Vue 3 & Microservices Expert</span>
+            </div>
+
+            {/* Verifiable open-source credential — links to the squel.js repo. */}
+            <a
+              href="https://github.com/hiddentao/squel"
+              target="_blank"
+              rel="noreferrer"
+              className="hover-glow inline-flex items-center gap-2 rounded-full px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.18em]"
+              style={{
+                border: '1px solid var(--accent-fuchsia-border)',
+                background: 'var(--accent-fuchsia)',
+                color: 'var(--accent-fuchsia-text)',
+              }}
+            >
+              <GitPullRequest className="h-3.5 w-3.5" />
+              Open Source Collaborator · squel.js
+            </a>
           </div>
 
           <div className="space-y-5">

@@ -9,7 +9,8 @@ import {
   Wand2,
   CircleCheckBig,
 } from "lucide-react";
-import TechIcon, { getBrandColor } from "./TechIcon";
+import TechIcon from "./TechIcon";
+import { getBrandColor } from "../lib/brandColors";
 
 const skillGroups = [
   {
@@ -89,6 +90,14 @@ const toolbelt = [
   "Developer experience",
 ];
 
+/**
+ * Skills
+ * ------
+ * Capability overview grouped by domain (frontend, backend, cloud, data) with
+ * brand-colored skill tags, plus a workflow / strengths panel.
+ *
+ * @returns {JSX.Element}
+ */
 const Skills = () => {
   return (
     <section id="skills" className="scroll-mt-28">

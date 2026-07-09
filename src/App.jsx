@@ -3,12 +3,25 @@ import { motion, useScroll, useSpring } from 'framer-motion';
 
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
+import Stats from './components/Stats';
 import Projects from './components/Projects';
 import Skills from './components/Skills';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 import CodeRain from './components/CodeRain';
 
+/**
+ * App
+ * ---
+ * Root layout for the portfolio. Composes the navigation, the animated
+ * background (CodeRain), a scroll-progress indicator, the main content sections
+ * (Hero, Projects, Skills, Contact), and the footer.
+ *
+ * Also tracks the cursor and exposes it as CSS custom properties
+ * (`--mouse-x` / `--mouse-y`) that drive the spotlight hover effect.
+ *
+ * @returns {JSX.Element}
+ */
 const App = () => {
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, {
@@ -60,6 +73,7 @@ const App = () => {
         <Hero />
 
         <div className="relative mx-auto flex max-w-7xl flex-col gap-8 px-6 pb-12 md:px-8">
+          <Stats />
           <Projects />
           <Skills />
           <Contact />

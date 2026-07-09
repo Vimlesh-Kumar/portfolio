@@ -1,5 +1,4 @@
 import React, { useState, useRef, useEffect } from "react";
-import { motion } from "framer-motion";
 
 const InteractiveTerminal = () => {
   const [history, setHistory] = useState([
@@ -10,16 +9,18 @@ const InteractiveTerminal = () => {
   const bodyRef = useRef(null);
   const inputRef = useRef(null);
 
+  // Keep the newest output in view whenever history changes. Uses the smooth
+  // `scrollTo` API where available, falling back to `scrollTop` for jsdom/older
+  // engines that don't implement it.
   useEffect(() => {
-    if (bodyRef.current) {
-      if (typeof bodyRef.current.scrollTo === "function") {
-        bodyRef.current.scrollTo({
-          top: bodyRef.current.scrollHeight,
-          behavior: "smooth",
-        });
-      } else {
-        bodyRef.current.scrollTop = bodyRef.current.scrollHeight;
-      }
+    const body = bodyRef.current;
+    /* v8 ignore start -- defensive: the terminal body ref is always attached */
+    if (!body) return;
+    /* v8 ignore stop */
+    if (typeof body.scrollTo === "function") {
+      body.scrollTo({ top: body.scrollHeight, behavior: "smooth" });
+    } else {
+      body.scrollTop = body.scrollHeight;
     }
   }, [history]);
 
@@ -76,7 +77,7 @@ const InteractiveTerminal = () => {
       case "ls":
         if (currentDir === "~") {
           pushOutput("projects/    README.md    resume.pdf    skills.txt", "var(--accent-primary)");
-        } else if (currentDir === "~/projects") {
+        } else {
           pushOutput(
             "squel/             online-pathshala/  vimpgp/\n" +
             "skycast-weather/   zync/              tatkal-reminder/\n" +
@@ -141,7 +142,7 @@ const InteractiveTerminal = () => {
           } else {
             pushOutput(`cat: ${file}: No such file or directory`, "var(--terminal-dot-red)");
           }
-        } else if (currentDir === "~/projects") {
+        } else {
           const cleanFile = file.replace("/", "");
           const projectDetails = {
             "squel": "Squel.js: Active maintainer of SQL query builder library for JavaScript. Modernized and updated features for cleaner object-oriented query generation in Node.js.",
@@ -258,7 +259,7 @@ const InteractiveTerminal = () => {
               output += `  Repo URL:    ${repo.html_url}\n\n`;
             });
             pushOutput(output, "var(--accent-emerald)");
-          } catch (e) {
+          } catch {
             pushOutput(
               "\n=== ACTIVE GITHUB REPOSITORIES (FALLBACK) ===\n\n" +
               "★ squel                     [JavaScript]  - 12 stars\n" +
@@ -290,7 +291,7 @@ const InteractiveTerminal = () => {
               `Profile Link:     ${profile.html_url}\n`,
               "var(--accent-emerald)"
             );
-          } catch (e) {
+          } catch {
             pushOutput(
               "\nGitHub Profile (Fallback):\n" +
               "Username:     Vimlesh-Kumar\n" +
@@ -368,7 +369,7 @@ const InteractiveTerminal = () => {
           <div key={i} className="mb-3 whitespace-pre-wrap wrap-break-word">
             {line.type === "input" ? (
               <div>
-                <span className="terminal-prompt font-bold">vimlesh@dev</span> <span style={{ opacity: 0.6 }}>{line.dir || "~"}</span>
+                <span className="terminal-prompt font-bold">vimlesh@dev</span> <span style={{ opacity: 0.6 }}>{line.dir}</span>
                 <br />
                 <span style={{ color: 'var(--terminal-dot-yellow)' }}>$</span> <span style={{ color: 'var(--text-primary)' }}>{line.text}</span>
               </div>

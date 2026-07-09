@@ -2,6 +2,18 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Sliders, MousePointer2, Paintbrush, Zap } from "lucide-react";
 
+/**
+ * InteractiveSandbox
+ * ------------------
+ * A self-contained "live playground" demo: controls let visitors tweak a
+ * preview element's corner radius, accent color, and a click counter in real
+ * time — a lightweight showcase of interactive UI state.
+ *
+ * NOTE: Standalone component (not currently mounted in the page). Kept and
+ * fully tested so it can be dropped into a section when desired.
+ *
+ * @returns {JSX.Element}
+ */
 const InteractiveSandbox = () => {
   const [radius, setRadius] = useState(24);
   const [color, setColor] = useState("cyan");

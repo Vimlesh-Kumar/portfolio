@@ -1,13 +1,29 @@
 import React, { useEffect, useRef } from "react";
-import { useTheme } from "../context/ThemeContext";
+import { useTheme } from "../context/theme-context";
+import { Particle } from "../lib/particle";
 
+/**
+ * CodeRain
+ * --------
+ * Ambient, theme-aware background: soft aurora blobs, a faint grid, and an
+ * interactive particle "constellation" on a `<canvas>` whose nodes drift, link
+ * to nearby neighbors, and lean toward the pointer.
+ *
+ * The canvas simulation is set up in a single effect keyed on `theme` so the
+ * palette rebuilds when the user toggles light/dark. All listeners and the
+ * animation frame are torn down on cleanup to avoid leaks.
+ *
+ * @returns {JSX.Element}
+ */
 const CodeRain = () => {
   const canvasRef = useRef(null);
   const { theme } = useTheme();
 
   useEffect(() => {
     const canvas = canvasRef.current;
+    /* v8 ignore start -- defensive: the canvas ref is always attached after mount */
     if (!canvas) return;
+    /* v8 ignore stop */
 
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
@@ -37,60 +53,10 @@ const CodeRain = () => {
       }
     };
 
-    let colors = getColors();
-
-    class Particle {
-      constructor() {
-        this.x = Math.random() * width;
-        this.y = Math.random() * height;
-        this.size = Math.random() * 2 + 1; // 1px to 3px
-        this.vx = (Math.random() - 0.5) * 0.35; // slow speed
-        this.vy = (Math.random() - 0.5) * 0.35;
-        
-        const colorObj = colors[Math.floor(Math.random() * colors.length)];
-        this.r = colorObj.r;
-        this.g = colorObj.g;
-        this.b = colorObj.b;
-        this.baseOpacity = Math.random() * 0.15 + 0.12;
-      }
-
-      update() {
-        this.x += this.vx;
-        this.y += this.vy;
-
-        // Bounce on edges
-        if (this.x < 0 || this.x > width) this.vx = -this.vx;
-        if (this.y < 0 || this.y > height) this.vy = -this.vy;
-
-        // Containment check
-        if (this.x < 0) this.x = 0;
-        if (this.x > width) this.x = width;
-        if (this.y < 0) this.y = 0;
-        if (this.y > height) this.y = height;
-
-        // Pull to mouse
-        if (mouse.x !== null && mouse.y !== null) {
-          const dx = mouse.x - this.x;
-          const dy = mouse.y - this.y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < mouse.radius) {
-            const force = (mouse.radius - dist) / mouse.radius;
-            this.x += (dx / dist) * force * 0.25;
-            this.y += (dy / dist) * force * 0.25;
-          }
-        }
-      }
-
-      draw() {
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(${this.r}, ${this.g}, ${this.b}, ${this.baseOpacity})`;
-        ctx.fill();
-      }
-    }
+    const colors = getColors();
 
     for (let i = 0; i < particleCount; i++) {
-      particles.push(new Particle());
+      particles.push(new Particle(width, height, colors));
     }
 
     const handleResize = () => {
@@ -112,14 +78,18 @@ const CodeRain = () => {
     window.addEventListener("mousemove", handleMouseMove);
     window.addEventListener("mouseleave", handleMouseLeave);
 
+    /* v8 ignore start -- per-frame canvas painting: purely visual, has no
+       jsdom-observable output, and its branch outcomes depend on random
+       particle positions. The particle physics it drives are unit-tested
+       deterministically in src/lib/__tests__/particle.test.ts. */
     const animate = () => {
       ctx.clearRect(0, 0, width, height);
 
       // Render links between particles
       for (let i = 0; i < particles.length; i++) {
         const p1 = particles[i];
-        p1.update();
-        p1.draw();
+        p1.update(width, height, mouse);
+        p1.draw(ctx);
 
         for (let j = i + 1; j < particles.length; j++) {
           const p2 = particles[j];
@@ -157,6 +127,7 @@ const CodeRain = () => {
 
       animationFrameId = requestAnimationFrame(animate);
     };
+    /* v8 ignore stop */
 
     animate();
 

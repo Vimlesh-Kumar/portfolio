@@ -9,6 +9,14 @@ const navItems = [
   { label: "Contact", icon: "✉️" },
 ];
 
+/**
+ * Navbar
+ * ------
+ * Sticky top navigation: brand mark, section anchor links, the theme toggle,
+ * and a collapsible mobile menu.
+ *
+ * @returns {JSX.Element}
+ */
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 

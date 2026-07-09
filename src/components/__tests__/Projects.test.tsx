@@ -190,4 +190,18 @@ describe("Projects", () => {
     render(<Projects />);
     expect(screen.getByText(/A curated set of 11 projects/)).toBeInTheDocument();
   });
+
+  it("applies and removes hover styling on a project tech tag", () => {
+    const { container } = render(<Projects />);
+    const tag = container.querySelector(".skill-tag") as HTMLElement;
+    expect(tag).toBeTruthy();
+
+    expect(tag.style.transform).toBe("none");
+
+    fireEvent.mouseEnter(tag);
+    expect(tag.style.transform).not.toBe("none");
+
+    fireEvent.mouseLeave(tag);
+    expect(tag.style.transform).toBe("none");
+  });
 });

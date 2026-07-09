@@ -1,5 +1,5 @@
 import React from "react";
-import { render, screen } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import Skills from "../Skills";
 
@@ -33,5 +33,21 @@ describe("Skills", () => {
     render(<Skills />);
     expect(screen.getByText("Product-minded execution")).toBeInTheDocument();
     expect(screen.getByText("Performance tuning")).toBeInTheDocument();
+  });
+
+  it("applies and removes the hover styling on a skill tag", () => {
+    const { container } = render(<Skills />);
+    const tag = container.querySelector(".skill-tag") as HTMLElement;
+    expect(tag).toBeTruthy();
+
+    // Default (not hovered) state.
+    expect(tag.style.transform).toBe("none");
+
+    fireEvent.mouseEnter(tag);
+    expect(tag.style.transform).not.toBe("none");
+    expect(tag.style.boxShadow).not.toBe("none");
+
+    fireEvent.mouseLeave(tag);
+    expect(tag.style.transform).toBe("none");
   });
 });

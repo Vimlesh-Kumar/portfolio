@@ -18,7 +18,8 @@ import {
   Layers,
   Database
 } from "lucide-react";
-import TechIcon, { getBrandColor } from "./TechIcon";
+import TechIcon from "./TechIcon";
+import { getBrandColor } from "../lib/brandColors";
 
 // Subcomponent for interactive technology tags inside project cards
 const ProjectTechTag = ({ name }) => {
@@ -250,6 +251,15 @@ const ProjectCard = ({ project, index }) => {
   );
 };
 
+/**
+ * Projects
+ * --------
+ * Showcase of selected work. Renders the first few projects inline and reveals
+ * the full collection in a modal (with body-scroll locking). Each card links to
+ * the live site when available and to its source repository.
+ *
+ * @returns {JSX.Element}
+ */
 const Projects = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const visibleProjects = projects.slice(0, INITIAL_COUNT);
