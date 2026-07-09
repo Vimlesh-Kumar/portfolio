@@ -17,7 +17,21 @@ import {
   Sparkles,
 } from "lucide-react";
 
-const WEB3FORMS_ACCESS_KEY = "YOUR_ACCESS_KEY_HERE"; // Replace with your Web3Forms key
+/**
+ * Web3Forms access key, read from the environment at build time.
+ *
+ * Get a free key (no signup/billing — just enter your email) at
+ * https://web3forms.com, then set it in a `.env` file:
+ *
+ *   VITE_WEB3FORMS_ACCESS_KEY=your-key-here
+ *
+ * Web3Forms access keys are public by design (they only route to your inbox),
+ * so it is safe to ship in the client bundle.
+ */
+const getAccessKey = () => import.meta.env.VITE_WEB3FORMS_ACCESS_KEY || "";
+
+/** Direct email used as a fallback when the form isn't configured. */
+const CONTACT_EMAIL = "vimlesh11072000@gmail.com";
 
 const channels = [
   {
@@ -257,6 +271,19 @@ const Contact = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Fail fast (and helpfully) if no Web3Forms key is configured, instead of
+    // sending an invalid request and surfacing a confusing provider error.
+    const accessKey = getAccessKey();
+    if (!accessKey) {
+      setStatus("error");
+      setErrorMsg(
+        `Contact form isn't set up yet — please email me directly at ${CONTACT_EMAIL}.`
+      );
+      setTimeout(() => setStatus("idle"), 6000);
+      return;
+    }
+
     setStatus("sending");
     setErrorMsg("");
 
@@ -265,7 +292,7 @@ const Contact = () => {
         method: "POST",
         headers: { "Content-Type": "application/json", Accept: "application/json" },
         body: JSON.stringify({
-          access_key: WEB3FORMS_ACCESS_KEY,
+          access_key: accessKey,
           name: formData.name,
           email: formData.email,
           message: formData.message,

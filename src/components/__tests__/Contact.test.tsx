@@ -1,6 +1,6 @@
 import React from "react";
 import { render, screen, fireEvent, waitFor, act } from "@testing-library/react";
-import { describe, expect, it, vi, beforeEach } from "vitest";
+import { describe, expect, it, vi, beforeEach, afterEach } from "vitest";
 import Contact from "../Contact";
 
 // Mock framer-motion
@@ -24,6 +24,12 @@ describe("Contact Component", () => {
     vi.clearAllMocks();
     vi.useRealTimers();
     global.fetch = vi.fn();
+    // A configured key by default so the happy paths hit the network.
+    vi.stubEnv("VITE_WEB3FORMS_ACCESS_KEY", "test-access-key");
+  });
+
+  afterEach(() => {
+    vi.unstubAllEnvs();
   });
 
   it("renders correctly", () => {
@@ -71,6 +77,27 @@ describe("Contact Component", () => {
     fireEvent.change(messageInput, { target: { name: "message", value: "a".repeat(375) } });
     fireEvent.change(messageInput, { target: { name: "message", value: "a".repeat(475) } });
     expect(screen.getByText("475/500")).toBeInTheDocument();
+  });
+
+  it("shows a direct-email hint and skips the request when unconfigured", async () => {
+    vi.stubEnv("VITE_WEB3FORMS_ACCESS_KEY", "");
+    const setTimeoutSpy = vi.spyOn(window, "setTimeout");
+    render(<Contact />);
+    fireEvent.change(screen.getByLabelText(/Your Name/i), { target: { name: "name", value: "John" } });
+    fireEvent.change(screen.getByLabelText(/Email Address/i), { target: { name: "email", value: "j@t.com" } });
+    fireEvent.change(screen.getByLabelText(/Your Message/i), { target: { name: "message", value: "Msg valid." } });
+    fireEvent.click(screen.getByRole("button", { name: /Send Message/i }));
+
+    await screen.findByText(/isn't set up yet/i);
+    expect(global.fetch).not.toHaveBeenCalled();
+
+    expect(setTimeoutSpy).toHaveBeenCalledWith(expect.any(Function), 6000);
+    const callback = setTimeoutSpy.mock.calls.find(call => call[1] === 6000)![0];
+    act(() => {
+      callback();
+    });
+    expect(screen.queryByText(/isn't set up yet/i)).not.toBeInTheDocument();
+    setTimeoutSpy.mockRestore();
   });
 
   it("submits and resets status after success timeout", async () => {

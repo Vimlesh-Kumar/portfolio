@@ -12,6 +12,11 @@ dist
 dist-ssr
 *.local
 
+# Local env files (hold VITE_WEB3FORMS_ACCESS_KEY); .env.example stays tracked
+.env
+.env.local
+.env.*.local
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

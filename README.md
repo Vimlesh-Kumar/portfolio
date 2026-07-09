@@ -55,6 +55,26 @@ npm run build
 npm run preview
 ```
 
+## 📨 Contact Form Setup (free)
+
+The contact form sends messages via [Web3Forms](https://web3forms.com) — **free**, no signup or billing (you just enter the inbox email and they email you an access key).
+
+1. Get your free access key at <https://web3forms.com>.
+2. Copy `.env.example` to `.env` and set your key:
+
+   ```bash
+   cp .env.example .env
+   # .env
+   VITE_WEB3FORMS_ACCESS_KEY=your-key-here
+   ```
+
+3. Restart `npm run dev` (Vite reads env vars at startup). For production, set
+   `VITE_WEB3FORMS_ACCESS_KEY` in your host's environment (Vercel/Netlify/etc.)
+   or in `.env` before `npm run build`.
+
+Until a key is set, the form shows a friendly "email me directly" fallback
+instead of failing silently.
+
 ## 🧪 Quality & Testing
 
 This project treats a portfolio like production code.
