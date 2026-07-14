@@ -3,6 +3,7 @@ import { render, fireEvent } from "@testing-library/react";
 import { describe, expect, it, vi, beforeEach, afterEach } from "vitest";
 import CodeRain from "../CodeRain";
 import { ThemeProvider } from "../../context/ThemeContext";
+import { THEME_STORAGE_KEY } from "../../context/theme-context";
 
 /** Minimal stub of a 2D canvas context — enough for the animation to run. */
 const makeCtx = () =>
@@ -52,7 +53,7 @@ describe("CodeRain", () => {
   });
 
   it("builds the light palette when the theme is light", () => {
-    window.localStorage.setItem("portfolio-theme", "light");
+    window.localStorage.setItem(THEME_STORAGE_KEY, "light");
     const { container } = renderCodeRain();
     expect(container.querySelector("canvas")).toBeInTheDocument();
   });

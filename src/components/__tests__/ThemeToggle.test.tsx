@@ -3,6 +3,7 @@ import { render, screen, fireEvent } from "@testing-library/react";
 import { describe, expect, it, vi, beforeEach } from "vitest";
 import ThemeToggle from "../ThemeToggle";
 import { ThemeProvider } from "../../context/ThemeContext";
+import { THEME_STORAGE_KEY } from "../../context/theme-context";
 
 vi.mock("framer-motion", () => ({
   motion: {
@@ -53,7 +54,7 @@ describe("ThemeToggle", () => {
   });
 
   it("renders in light mode when localStorage has light theme", () => {
-    localStorage.setItem("portfolio-theme", "light");
+    localStorage.setItem(THEME_STORAGE_KEY, "light");
     renderWithProvider(<ThemeToggle />);
     expect(screen.getByRole("button", { name: /switch to dark mode/i })).toBeInTheDocument();
   });

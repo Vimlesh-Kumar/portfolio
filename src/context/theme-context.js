@@ -1,6 +1,18 @@
 import { createContext, useContext } from "react";
 
 /**
+ * `localStorage` key under which the active theme is persisted.
+ *
+ * Namespaced to this app so it can't collide with another site sharing the
+ * same origin, and so the cross-tab `storage` listener only reacts to *our*
+ * theme changes. This is the single source of truth — import it everywhere the
+ * key is needed rather than repeating the string literal.
+ *
+ * @type {string}
+ */
+export const THEME_STORAGE_KEY = "vimlesh-portfolio:theme";
+
+/**
  * @typedef {"dark" | "light"} Theme
  *
  * @typedef {object} ThemeContextValue
